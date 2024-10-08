@@ -10,7 +10,8 @@
     font-weight: bold;
 }
 .ProducyDetailImgs{
-    width: 40%;
+    width: 45%;
+    position: sticky;
 }
 .ProductDetailImgDiv{
     width:90%;

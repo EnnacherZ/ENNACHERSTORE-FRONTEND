@@ -127,7 +127,7 @@ const ProductDetail: React.FC = () => {
                 
                 <div className="mt-2 ProductDetailNP">
                     <div className="ProductDetailInfos1 mt-2 mb-4 text-center ProductDetailName">
-                        Product Preview
+                        Product Preview {window.innerWidth}
                     </div>
                     <div className="ProductDetailName mt-1 mb-3 text-muted">
                         {(DetailledProduct?.selectedProduct.category).toUpperCase()} {('SHOES')} : {(DetailledProduct?.selectedProduct.ref).toUpperCase()}
@@ -196,6 +196,9 @@ const ProductDetail: React.FC = () => {
                                 </>
                             )}
                         </button>
+                    </div>
+                    <div className="ProductDetailText">
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur molestiae neque dolorum rerum saepe sequi vitae maxime praesentium minima ipsam, debitis ducimus et libero quos ex. Ducimus totam voluptate dolor!
                     </div>
                     
                 </div>
