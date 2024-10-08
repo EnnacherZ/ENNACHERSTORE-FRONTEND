@@ -46,13 +46,13 @@ const Products : React.FC<productsShow> = ({pData, pDataDetails, productShowed, 
       return x
     }
 
-    const isRemaining = (i:number) => {
-      if(!selectedShoeDetails[i]){return true}
-      if (selectedShoeDetails[i] && selectedShoeDetails[i].quantity !== null && selectedShoeDetails[i].quantity > 0) {
+    const isRemaining = (i: number) => {
+      const shoeDetail = selectedShoeDetails[i];
+      if (!shoeDetail) {
         return true;
       }
-      return false;
-    }
+      return shoeDetail.quantity !== null && shoeDetail.quantity > 0;
+    };
     
     useEffect(()=>{
         setProducts(pData);
