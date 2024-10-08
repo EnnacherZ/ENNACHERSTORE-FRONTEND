@@ -1,0 +1,49 @@
+.productCarousel{
+    width: 100%;
+    height: auto;
+    background-color: #e8e8e8;
+    padding-bottom: 30px;
+}
+.productCarouselCard{
+    width:80%;
+    height:100%;
+    margin: auto;
+    background-color: #fafafa;
+    display: flex;
+    justify-content: space-between;
+
+}
+.productCImgCont{
+    width:100%;
+    height: 200px;
+}
+.productCImgCont img{
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+.productCInfos1{
+    text-transform: capitalize;
+}
+.productCInfos2{
+    text-transform: capitalize;
+}
+.productCPriceP{
+    color:green;
+    font-weight: bold;
+    font-size: 1em;
+}
+.productCPriceD{
+    color: black;
+    text-decoration: line-through;
+    text-decoration-color: red;
+    font-size: 0.9em;
+}
+.productCDiscount{
+    color:red;
+    font-weight: bold;
+    font-size: 1em;
+}
+.productCView{
+    height:50px
+}

@@ -1,0 +1,123 @@
+const updatedList1 = [];
+    for(const p of localShoesItems){
+      updatedList1.push({
+        id: p.id,
+        category : p.category,
+        ref: p.ref,
+        name: p.name,
+        price: p.price,
+        size : p.size,
+        quantity : itemOccurrence(p, localShoesItems),
+      })
+    }
+    function itemOccurrence(liste: CartItem[], item:CartItem): number {
+        return liste.reduce((compteur, element) => {
+            return (element.id === item.id && element.size === item.size) ? compteur + 1 : compteur;
+        }, 0);
+    }
+
+    function removeDuplicates(l:CartItem[]) {
+        const seen = new Set();
+        return l.filter((item) => {
+          const key = `${item.id}-${item.size}`;
+          if (seen.has(key)) {
+            return false;
+          } else {
+            seen.add(key);
+            return true;
+          }
+        });
+      }
+
+      const filterData = (data : Shoe[], criterias: DataToFilter) => {
+        return data.filter((item) => {
+          const categoryMatch = criterias.category === "" || item.category.replace(/\s/g,"").toLowerCase() === criterias.category.replace(/\s/g,"").toLowerCase();
+          const refMatch = criterias.ref === "" || item.ref.replace(/\s/g,"").toLowerCase() === criterias.ref.replace(/\s/g,"").toLowerCase();
+          const nameMatch = criterias.name === "" || item.name.replace(/\s/g,"").toLowerCase() === criterias.name.replace(/\s/g,"").toLowerCase();
+          return categoryMatch && refMatch && nameMatch;
+        });
+      };
+
+
+      <div className='ClientInfosDiv card ' style={{ marginTop: "2%" }}>
+      <div className='text-center fs-2'>Your informations</div>
+      <label>First Name</label>
+      <div className="input-group mb-3 ">
+        <span className="input-group-text" id="basic-addon1"><FaUser /></span>
+        <input type="text" className="form-control" placeholder="First Name" aria-label="Username" aria-describedby="basic-addon1"/>
+      </div>
+      <label>Last Name</label>
+      <div className="input-group mb-3">
+        <span className="input-group-text" id="basic-addon1"><FaUser /></span>
+        <input type="text" className="form-control" placeholder="Last Name" aria-label="Username" aria-describedby="basic-addon2"/>
+      </div>
+    </div>
+
+    const filterData = (data: Shoe[], criterias: DataToFilter) => {
+      return data.filter((item) => {
+        if (criterias.category === "" && criterias.name === "" && criterias.ref === "") return true;
+        if (
+          criterias.category !== "" &&
+          criterias.ref.replace(/\s/g, "").toLowerCase() !== "" &&
+          criterias.name.replace(/\s/g, "").toLowerCase() !== ""
+        ) {
+          return (
+            item.category.replace(/\s/g, "").toLowerCase() === criterias.category.replace(/\s/g, "").toLowerCase() &&
+            item.ref.replace(/\s/g, "").toLowerCase() === criterias.ref.replace(/\s/g, "").toLowerCase() &&
+            item.name.replace(/\s/g, "").toLowerCase() === criterias.name.replace(/\s/g, "").toLowerCase()
+          );
+        }
+        if (criterias.category === "") {
+          if (
+            criterias.ref.replace(/\s/g, "").toLowerCase() !== "" &&
+            criterias.name.replace(/\s/g, "").toLowerCase() !== ""
+          ) {
+            return (
+              item.name.replace(/\s/g, "").toLowerCase() === criterias.name.replace(/\s/g, "").toLowerCase() &&
+              item.ref.replace(/\s/g, "").toLowerCase() === criterias.ref.replace(/\s/g, "").toLowerCase()
+            );
+          }
+          if (criterias.name.replace(/\s/g, "").toLowerCase() === "" && criterias.ref.replace(/\s/g, "").toLowerCase() !== "") {
+            return item.ref.replace(/\s/g, "").toLowerCase() === criterias.ref.replace(/\s/g, "").toLowerCase();
+          }
+          if (criterias.ref.replace(/\s/g, "").toLowerCase() === "" && criterias.name.replace(/\s/g, "").toLowerCase() !== "") {
+            return item.name.replace(/\s/g, "").toLowerCase() === criterias.name.replace(/\s/g, "").toLowerCase();
+          }
+        }
+        if (criterias.category !== "") {
+          if (criterias.ref.replace(/\s/g, "").toLowerCase() === "" && criterias.name.replace(/\s/g, "").toLowerCase() === "") {
+            return item.category.replace(/\s/g, "").toLowerCase() === criterias.category.replace(/\s/g, "").toLowerCase();
+          }
+          if (criterias.ref.replace(/\s/g, "").toLowerCase() === "" && criterias.name.replace(/\s/g, "").toLowerCase() !== "") {
+            return (
+              item.category.replace(/\s/g, "").toLowerCase() === criterias.category.replace(/\s/g, "").toLowerCase() &&
+              item.name.replace(/\s/g, "").toLowerCase() === criterias.name.replace(/\s/g, "").toLowerCase()
+            );
+          }
+          if (criterias.name.replace(/\s/g, "").toLowerCase() === "" && criterias.ref.replace(/\s/g, "").toLowerCase() !== "") {
+            return (
+              item.category.replace(/\s/g, "").toLowerCase() === criterias.category.replace(/\s/g, "").toLowerCase() &&
+              item.ref.replace(/\s/g, "").toLowerCase() === criterias.ref.replace(/\s/g, "").toLowerCase()
+            );
+          }
+        }
+        return false;
+      });
+    };
+
+
+    <div>
+                                <span style={{fontSize:"1.3vw", fontWeight:500}} >PRIX :</span>
+                                <span className="present-price ms-1"><strong style={{fontSize:"1.3vw"}}>{(item.price*(1-item.promo*0.01)).toFixed(2)} MAD</strong></span>
+                                </div>
+                                <div className=" " 
+                                        style={item.promo===0?{display:'none'}:{}}>
+                                    <span style={{fontSize:"1.3vw", fontWeight:500}} >Before :</span>
+                                    <span className="deleted-price-cart ms-1 mt-0"><strong style={{fontSize:"1.1vw", fontWeight:500,}}>{(item.price.toFixed(2))} MAD</strong></span>  
+                                </div>
+                                <p style={{fontSize:"1.3vw",}}><b style={{ fontWeight:500}}>Quantity :</b> {item.quantity}</p>
+
+
+
+                                
+
