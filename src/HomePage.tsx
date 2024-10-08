@@ -12,20 +12,35 @@ import { TbRosetteDiscount } from "react-icons/tb";
 const HomePage: React.FC = () => {
     const apiUrl = packageJson.config.backendURL;
     const [allData, setAllData] = useState<Shoe[]>([])
+    const [productDetails, setProductDetails] = useState([])
     const [productCPromo, setProductCPromo] = useState<Shoe[]>([])
     const [productCNoPromo, setProductCNoPromo] = useState<Shoe[]>([])
     
     useEffect(()=>{
       const getData = async () =>{
               const newestShoes = await axios.get(`${apiUrl}api/getNewestShoes`)
+              const ShoesData = await axios.get(`${apiUrl}api/getShoeSizes`)
               setAllData(newestShoes.data.list_newest_shoes || []);
-              setProductCPromo(allData.filter((i)=>{if(i.promo!=0){return true}else{return false}}))
-              setProductCNoPromo(allData.filter((i)=>{if(i.promo==0){return true}else{return false}}))
-              
-      };
+              setProductDetails(ShoesData.data.list_shoeSizes || []);
+     };
       getData();
 
     },[])
+    useEffect(()=>{
+        if (allData.length > 0) {
+            const { promo, noPromo } = allData.reduce((acc, shoe) => {
+                if (shoe.promo === 0) {
+                    acc.noPromo.push(shoe);
+                } else {
+                    acc.promo.push(shoe);
+                }
+                return acc;
+            }, { promo: [], noPromo: [] } as { promo: Shoe[]; noPromo: Shoe[] });
+
+            setProductCPromo(promo);
+            setProductCNoPromo(noPromo);
+        }
+    }, [allData])
 
     return (<>
         <Header />        
@@ -38,7 +53,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="ProductsPromoAnnouncement">
             </div>
-            <ProductCarousel Data={productCPromo}/>
+            <ProductCarousel Data={productCPromo} DataDetails = {productDetails}/>
         </div>
         <div className="ProductsHome">
         <div className="HomeTitle fw-bold rounded">
@@ -48,7 +63,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="ProductsPromoAnnouncement">
             </div>
-            <ProductCarousel Data={productCNoPromo}/>
+            <ProductCarousel Data={productCNoPromo} DataDetails = {productDetails}/>
         </div>
         
         <Footer/>    

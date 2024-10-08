@@ -11,7 +11,9 @@
 }
 .ProducyDetailImgs{
     width: 45%;
+    height: auto;
     position: sticky;
+    top: 110px;
 }
 .ProductDetailImgDiv{
     width:90%;

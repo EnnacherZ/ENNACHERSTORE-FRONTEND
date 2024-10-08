@@ -3,15 +3,20 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "./ProductCarousel.css";
 import packageJson from "../package.json";
-import { Shoe,} from "./Shoes";
+import { Shoe, ShoeSize,} from "./Shoes";
+import { Sandal, SandalSize } from "./Sandales";
+import { useNavigate } from "react-router-dom";
+import { useProductsContext } from "./ProductsContext";
 
 interface ProductCarouselProps {
-  Data : Shoe[]
+  Data : Shoe[];
+  DataDetails : any;
 }
 
-const ProductCarousel : React.FC<ProductCarouselProps> = ({Data}) => {
+const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) => {
   const apiUrl = packageJson.config.backendURL;
-
+  const navigate = useNavigate();
+  const {setTargetedProduct} = useProductsContext();
     const responsive = {
         superLargeDesktop: {
           breakpoint: { max: 4000, min: 1024 },
@@ -30,6 +35,11 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data}) => {
           items: 1
         }
       };
+      const getProductDetail = (pro : Shoe| Sandal, proDetail : ShoeSize[] | SandalSize[]) =>{
+        setTargetedProduct(pro, proDetail);
+        navigate(`/productDetail/${pro.productType}/${pro.category}/${pro.ref}/`)
+  
+      } 
     return(
       <>
         <Carousel className={`mt-1 productCarousel z-0 ${Data.length===0?'d-none':""}`} 
@@ -56,7 +66,8 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data}) => {
               <div className={`productCPriceD my-2 ${item.promo==0?'d-none':''}`}>{item.price} MAD</div>
               <div className={`productCDiscount my-2 ${item.promo==0?'d-none':''}`}> {item.promo}% off</div>
             </div>
-            <button className="btn btn-dark rounded productCView mb-0">
+            <button className="btn btn-dark rounded productCView mb-0"
+                    onClick={()=>getProductDetail(item, DataDetails)}>
               View the product 
             </button>
 
@@ -71,3 +82,5 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data}) => {
 
 }
 export default ProductCarousel;
+
+

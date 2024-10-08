@@ -124,7 +124,6 @@ const ProductDetail: React.FC = () => {
 
                     </Swiper>
                 </div>
-                
                 <div className="mt-2 ProductDetailNP">
                     <div className="ProductDetailInfos1 mt-2 mb-4 text-center ProductDetailName">
                         Product Preview {window.innerWidth}
@@ -198,6 +197,7 @@ const ProductDetail: React.FC = () => {
                         </button>
                     </div>
                     <div className="ProductDetailText">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus in adipisci possimus deleniti labore eaque reprehenderit, esse distinctio repellat asperiores dignissimos dicta sint cupiditate debitis ducimus ratione. Delectus saepe ex nisi error natus magni hic molestiae! Perspiciatis officiis architecto laboriosam odit illo, quasi delectus consequuntur, deserunt nemo est eius excepturi a saepe sint itaque expedita commodi quisquam nisi odio dolorem voluptate quos optio alias molestias. Reiciendis perferendis adipisci eius culpa fuga facilis consectetur, inventore provident minus quam maxime earum similique accusamus sapiente at dolore. Labore, tempore! Dolorum eius quos laborum necessitatibus aliquam ut, aspernatur quaerat nam dolorem ea, qui voluptatibus.
                         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequuntur molestiae neque dolorum rerum saepe sequi vitae maxime praesentium minima ipsam, debitis ducimus et libero quos ex. Ducimus totam voluptate dolor!
                     </div>
                     
