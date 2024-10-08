@@ -1,5 +1,4 @@
 import React, {useState, useEffect, createContext, useContext, ReactNode} from "react";
-import { CartItem } from "./cartContext";
 
 export interface clientData{
     FirstName : string;

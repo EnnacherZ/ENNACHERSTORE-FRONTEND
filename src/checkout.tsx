@@ -6,13 +6,12 @@ import { useForm } from 'react-hook-form';
 import { IoArrowBackOutline } from "react-icons/io5";
 import { FaPhone } from 'react-icons/fa6';
 import { BsGeoAltFill } from 'react-icons/bs';
-import { FaCity,FaRegCopyright,FaRegUserCircle, FaUserCircle} from 'react-icons/fa';
+import { FaCity,FaRegUserCircle, FaUserCircle} from 'react-icons/fa';
 import { MdAlternateEmail} from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
 import './footer.css'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faInstagram, faTwitter } from "@fortawesome/free-brands-svg-icons";
+
 import Footer from "./footer";
 
 type FormValues = {

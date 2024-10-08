@@ -6,16 +6,10 @@ import ProductCarousel from "./ProductCarousel.tsx";
 import packageJson from "../package.json";
 import { Shoe } from "./Shoes.tsx";
 import axios from "axios";
-import { LiaShoePrintsSolid } from "react-icons/lia";
 import "./HomePage.css";
 import { TbRosetteDiscount } from "react-icons/tb";
-import Marquee from "react-fast-marquee";
 
 const HomePage: React.FC = () => {
-    interface ProductsData {
-        shoes : ['Shoes', Shoe[]],
-        sandals : ['Sandals', Shoe[]],
-    }
     const apiUrl = packageJson.config.backendURL;
     const [allData, setAllData] = useState<Shoe[]>([])
     const [productCPromo, setProductCPromo] = useState<Shoe[]>([])
@@ -43,14 +37,18 @@ const HomePage: React.FC = () => {
                 <TbRosetteDiscount className="HomeTitleIcon" />
             </div>
             <div className="ProductsPromoAnnouncement">
-                <Marquee>
-                
-                </Marquee>
             </div>
             <ProductCarousel Data={productCPromo}/>
         </div>
         <div className="ProductsHome">
-            
+        <div className="HomeTitle fw-bold rounded">
+                <TbRosetteDiscount className="HomeTitleIcon" />
+                Our product
+                <TbRosetteDiscount className="HomeTitleIcon" />
+            </div>
+            <div className="ProductsPromoAnnouncement">
+            </div>
+            <ProductCarousel Data={productCNoPromo}/>
         </div>
         
         <Footer/>    
