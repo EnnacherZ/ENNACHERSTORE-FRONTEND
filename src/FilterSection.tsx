@@ -95,9 +95,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType}
                 </div>            
         {isDroppedFilter?
             (<>
-                <div className={`toDropFilter ${dropOn?"closed":""} rounded-circle shadow`}
+                <div className={`toDropFilter ${dropOn?"closed":""} rounded-circle shadow flex-column`}
                     onClick={()=>setDropOn(true)}>
-                    <FaArrowDown size={20} />
+                    <div className="my-1"><FaArrowDown size={20} /></div>
                 </div>
                 <div className={`filter-dropped-inputs ${dropOn?"active":""}`}>
                     <div className={`FDI-S1 ${dropOn?'active':''}`}>

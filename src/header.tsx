@@ -68,7 +68,9 @@ const Header: React.FC = () => {
     
 
     return (
-        <div className="header-container border-bottom-5 shadow-sm" style={{borderBottomColor:"#7baccb"}}>
+        <div    className="header-container border-bottom-5 shadow-sm" 
+                style={{borderBottomColor:"#7baccb"}}
+                >
         {isPhone?(<>
             <div className="navbar">
             <div className="icon-section">
@@ -76,7 +78,14 @@ const Header: React.FC = () => {
                     <img className="icon1" src={icon1} alt="Icon" />
                 </a>
             </div>
-            <div className="sideBarIcon d-flex align-items-center"><FaBars className="sideBarIconX" onClick={()=>setSidebar(true)}/></div>
+            <div className="sideBarIcon " onClick={()=>setSidebar(!sidebar)}>
+                <div    className={sidebar?`sideBarIconLine1 active`:"sideBarIconLine1"}
+                        onClick={()=>setSidebar(!sidebar)}></div>
+                <div    className={sidebar?`sideBarIconLine2 active`:"sideBarIconLine2"}
+                        onClick={()=>setSidebar(!sidebar)}></div>
+                <div    className={sidebar?`sideBarIconLine3 active`:"sideBarIconLine3"}
+                        onClick={()=>setSidebar(!sidebar)}></div>
+            </div>
             <div className="SmallCart d-flex" onClick={()=>navigate("/YourCart")}>
                 <FaShoppingCart className="SmallCartIcon" />
                 <span className="rounded" style={{backgroundColor:'#0e92e4', color:"white", direction:'rtl'}}>
@@ -84,12 +93,6 @@ const Header: React.FC = () => {
             </div>
             <nav className={sidebar?"nav-menu active":"nav-menu"}>
                 <ul className="nav-menu-items p-0">
-                    <li className="navbar-toggle ps-2" onClick={()=>setSidebar(false)}>
-                        <Link to="#">
-                            <IoMdClose className="toggleIcon"/>
-                        </Link>
-                    </li>
-                    <hr className="me-4"/>
                     <li className="text-nav text-nav-li" onClick={()=>{setSidebar(false);navigate('/YourCart')}}>
                     <Link to="#"
                             data-active={location.pathname=="/YourCart"?"true":"false"}>

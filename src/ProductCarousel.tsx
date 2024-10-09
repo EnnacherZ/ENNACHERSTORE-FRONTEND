@@ -45,7 +45,7 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
         <Carousel className={`mt-1 productCarousel z-0 ${Data.length===0?'d-none':""}`} 
                 responsive={responsive}
                 swipeable={true}
-                autoPlay={true}
+                autoPlay={Data.length>1?true:false}
                 infinite={true}
                 autoPlaySpeed={1500}
                 transitionDuration={100}
