@@ -3,11 +3,10 @@ import { useCart } from "./cartContext";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import icon1 from "./assets/icon3.svg";
-import { FaBars, FaHome, FaShoppingCart, FaTshirt } from "react-icons/fa";
+import {FaHome, FaShoppingCart, FaTshirt } from "react-icons/fa";
 import { GiSandal } from "react-icons/gi";
 import { PiPantsBold } from "react-icons/pi";
 import { LiaShoePrintsSolid } from "react-icons/lia";
-import { IoMdClose } from "react-icons/io";
 import { FaAngleRight, FaShirt } from "react-icons/fa6";
 
 const Header: React.FC = () => {
