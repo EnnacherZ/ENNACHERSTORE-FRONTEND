@@ -3,7 +3,7 @@
     justify-content: space-between;
     width:100%;
     height: auto;
-    margin-bottom: 5% ;
+    margin-bottom: 2% ;
     scroll-behavior: smooth;
 }
 
@@ -117,8 +117,41 @@
 .comm-icon{
     margin-right: 2%;
 }
-
-
+.pagination{
+    list-style: none;
+    justify-content: center;
+}
+.pagination .previous a {
+    text-decoration: none;
+    border: 2px solid #000;
+    color: white;
+    background-color: #000 ;
+    font-size: 18px;
+    margin:0% 5px;
+    padding: 2px 8px;
+    text-align: center;
+}
+.pagination .next a{
+    text-decoration: none;
+    border: 2px solid #000;
+    color: white;
+    background-color:#000 ;
+    font-size: 18px;
+    margin:0% 8px;
+    padding: 5px 8px;
+    text-align: center;
+}
+.pagination li a[tabindex="0"], .pagination li a[tabindex="-1"]{
+    border: 2px solid #000;
+    margin: 0% 4px;
+    padding:3px 8px;
+    font-size: 18px;
+    transition: 0.4s ease;
+}
+.pagination li a[tabindex="-1"]{
+    background-color: #000;
+    color: white;
+}
 @media(max-width:800px){
     .productsDiv{
         flex-direction: column;

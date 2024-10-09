@@ -1,6 +1,6 @@
 import React from "react";
 import { CartProvider } from "./cartContext";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate,} from "react-router-dom";
 import HomePage from "./HomePage";
 import Shoes from "./Shoes";
 import Sandales from "./Sandales";
@@ -26,7 +26,7 @@ const App : React.FC = () =>{
           <Routes>
             <Route path='productDetail/:productType/:category/:ref' element={<ProductDetail/>}/>
             <Route path="/test" element={<Test/>}/>
-            <Route path="/" element={<HomePage/>}/>
+            <Route path="/" element={<Navigate to="/Home"/>}/>
             <Route path="/Home" element={<HomePage/>} />
             <Route path="/Shoes" element={<Shoes/>}/>
             <Route path="/Sandals"  element={<Sandales/>} />
@@ -37,7 +37,6 @@ const App : React.FC = () =>{
           </Routes>
         </Router>
       </ProductsContextProvider>
-        
       </CartProvider>
       </PaymentProvider>
     );
