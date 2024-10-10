@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, {useLayoutEffect, useState } from "react";
 import { useCart } from "./cartContext";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
@@ -8,10 +8,16 @@ import { GiSandal } from "react-icons/gi";
 import { PiPantsBold } from "react-icons/pi";
 import { LiaShoePrintsSolid } from "react-icons/lia";
 import { FaAngleRight, FaShirt } from "react-icons/fa6";
+import { MdLanguage } from "react-icons/md";
+import { useTranslation } from "react-i18next";
+import "./languageContext";
+import { useLangContext } from "./languageContext";
 
 const Header: React.FC = () => {
     const { itemCount } = useCart();
     const navigate = useNavigate();
+    const {setCurrentLang} = useLangContext();
+    const {t} = useTranslation();
     const [sidebar, setSidebar] =useState<boolean>(false);
     const [isPhone, setIsPhone] = useState<boolean>(false);
 
@@ -34,36 +40,34 @@ const Header: React.FC = () => {
         {
             path :"/Home" ,
             icon : <FaHome/>,
-            name: 'Home' ,
+            name: 'home' ,
             cName: 'text-nav',
         },
         {
             path : "/Shoes",
             icon : <LiaShoePrintsSolid/>,
-            name: 'Shoes',
+            name: 'shoes',
             cName: 'text-nav',
         },
         {
             path : "/Sandals",
             icon : <GiSandal/>,
-            name: 'Sandals',
+            name: 'sandals',
             cName: 'text-nav',
         },
         {
             path : "/Shirts",
             icon : <FaShirt/>,
-            name: 'Shirts',
+            name: 'shirts',
             cName: 'text-nav',
         },
         {
             path : '/Pants',
             icon : <PiPantsBold/>,
-            name: 'Pants',
+            name: 'pants',
             cName: 'text-nav',
         },
-    ]
-
-    
+    ]    
     
 
     return (
@@ -92,12 +96,27 @@ const Header: React.FC = () => {
             </div>
             <nav className={sidebar?"nav-menu active":"nav-menu"}>
                 <ul className="nav-menu-items p-0">
+                    <li className="text-nav text-nav-li langSelectorPhone justify-content-around">
+                    <MdLanguage size={30}/>
+                        <select className=""
+                                onChange={(e)=>setCurrentLang(e.target.value)}>
+                            <option>
+                                العربية
+                            </option>
+                            <option>
+                                Français
+                            </option>
+                            <option>
+                                English
+                            </option>
+                        </select>
+                    </li>
                     <li className="text-nav text-nav-li" onClick={()=>{setSidebar(false);navigate('/YourCart')}}>
                     <Link to="#"
                             data-active={location.pathname=="/YourCart"?"true":"false"}>
                     <FaShoppingCart/>
                         <span className="nav-span">
-                            Your cart 
+                            {t('YourCart')} 
                         </span><span style={{fontSize:14}}>({itemCount})</span>
                     </Link>
                     </li>
@@ -108,7 +127,7 @@ const Header: React.FC = () => {
                                 <Link to="#"
                                         data-active={location.pathname==item.path?"true":"false"}>
                                     {item.icon}
-                                    <span className="nav-span">{item.name}</span>
+                                    <span className="nav-span">{t(item.name)}</span>
                                     <span className="nav-span-icon"><FaAngleRight /></span>
                                 </Link>
                             </li>
@@ -131,10 +150,10 @@ const Header: React.FC = () => {
                 style={{ outline: "none",zIndex: 20, fontSize:"1.3vw" }}
             >
                 <FaShoppingCart className="cart-icon" style={{ marginRight: '2%' }} />
-                VOTRE PANIER
+                {t('YourCart')}
                 <p style={{ position: 'absolute', right: '2%', top: '18%' }}>({itemCount})</p>
             </button>
-            <div className="header-buttons btn-group" style={{ position: 'absolute', left: '15%', }}>
+            <div className="header-buttons btn-group" style={{ position: 'absolute', left: '12%', }}>
                 <div className="vertical-line mx-1 muted"></div>
                 <button
                     onClick={() => {handleclick("/Home")}}
@@ -143,7 +162,7 @@ const Header: React.FC = () => {
                     data-active={location.pathname=="/Home"|| location.pathname=="/"?"true":"false"}
                     
                 >   
-                    <FaHome className="btn-header-icon" /> Accueil
+                    <FaHome className="btn-header-icon" /> {t('home')}
                 </button>
                 <div className="vertical-line mx-1 muted"></div>
                 <button
@@ -152,7 +171,7 @@ const Header: React.FC = () => {
                     className={`btn rounded btn-header text-end`}
                     data-active={location.pathname=="/Shoes"?"true":"false"}
                 >
-                    <LiaShoePrintsSolid className="btn-header-icon" /> Shoes
+                    <LiaShoePrintsSolid className="btn-header-icon" /> {t('shoes')}
                 </button>
                 <div className="vertical-line mx-1"></div>
                 <button
@@ -161,7 +180,7 @@ const Header: React.FC = () => {
                     className={`btn rounded btn-header text-end `}
                     data-active={location.pathname=="/Sandals"?"true":"false"}
                 >
-                    <GiSandal className="btn-header-icon" /> Sandals
+                    <GiSandal className="btn-header-icon" /> {t('sandals')}
                 </button>
                 <div className="vertical-line mx-1"></div>
                 <button
@@ -170,7 +189,7 @@ const Header: React.FC = () => {
                     className={`btn rounded btn-header text-end`}
                     data-active={location.pathname=="/Shirts"?"true":"false"}
                 >
-                    <FaTshirt className="btn-header-icon" /> Shirts
+                    <FaTshirt className="btn-header-icon" /> {t('shirts')}
                 </button>
                 <div className="vertical-line mx-1"></div>
                 <button
@@ -179,10 +198,27 @@ const Header: React.FC = () => {
                     className={`btn rounded btn-header text-end`}
                     data-active={location.pathname==""?"true":"false"}
                 >
-                    <PiPantsBold className="btn-header-icon" /> Pants
+                    <PiPantsBold className="btn-header-icon" /> {t('pants')}
                 </button>
+
                 <div className="vertical-line mx-1 muted"></div>
             </div>
+            <div className="LanguageSelector flex-column">
+                <MdLanguage size={25}/>
+                <select className=""
+                        onChange={(e)=>setCurrentLang(e.target.value)}>
+                <option>
+                    العربية
+                </option>
+                <option>
+                    Français
+                </option>
+                <option>
+                    English
+                </option>
+            </select>
+            </div>
+
         </>)}
 
 

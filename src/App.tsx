@@ -13,11 +13,13 @@ import { PaymentProvider } from "./paymentContext";
 import Checkout from "./checkout";
 import ProductDetail from "./ProductDetail";
 import { ProductsContextProvider } from "./ProductsContext";
+import { LangContextProvider } from "./languageContext";
 
 
 const App : React.FC = () =>{
 
     return(
+      <LangContextProvider>
       <PaymentProvider>
       <CartProvider>
       <ProductsContextProvider>
@@ -39,6 +41,7 @@ const App : React.FC = () =>{
       </ProductsContextProvider>
       </CartProvider>
       </PaymentProvider>
+      </LangContextProvider>
     );
 
 

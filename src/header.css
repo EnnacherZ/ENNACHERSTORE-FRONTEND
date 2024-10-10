@@ -107,6 +107,34 @@
     border: 2px solid black
 }
 
+.LanguageSelector{
+    position: absolute;
+    bottom: 1px;
+    right: 5px;
+    height: 30px;
+    outline: none;
+}
+.LanguageSelector select, .LanguageSelector select option{
+    outline: none;
+    border: none;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.langSelectorPhone{
+    outline: none;
+}
+.langSelectorPhone select, .langSelectorPhone select option{
+    outline: none;
+    border: none;
+    font-weight: bold;
+    margin-left: 5px;
+    font-size: 18px;
+    background-color: white;
+    right:0
+    
+}
+
 .navbar{
     display: none;
 }
@@ -194,11 +222,17 @@
     top:70px;
     background-color: white;
     width: 165px;
-    height: 110vh;
+    height: 100vh;
     position: fixed;
     left:-100vw;
     transition: 860ms;
     z-index: 1000;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+    scrollbar-width: 2px;
+}
+.nav-menu::-webkit-scrollbar{
+    width:10px
 }
 .nav-menu.active{
     left:0;
