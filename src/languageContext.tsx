@@ -14,7 +14,18 @@ i18n
           sandals : 'Sandals',
           shirts : 'Shirts',
           pants :'Pants',
-          YourCart : 'Your cart', 
+          YourCart : 'Your cart',
+          ourPromotions : 'Our promotions',
+          ourProducts : 'Our products',
+          viewProduct : 'View the product',
+          addCart : 'Add to cart',
+          soldOut : 'Sold out',
+          sizes:'Sizes',
+          price:'Price',
+          mad  : 'MAD',
+          next : 'Next',
+          previous : 'Previous',
+
           
         },
       },
@@ -27,6 +38,16 @@ i18n
           shirts : 'Shirts',
           pants :'Pants',
           YourCart : 'Votre panier',
+          ourPromotions : 'Nos promotions',
+          ourProducts : 'Nos produits',
+          viewProduct : 'Voir le produit',
+          addCart : 'Ajouter au panier',
+          soldOut : 'Epuisé',
+          sizes : 'Tailles',
+          price : 'Prix',
+          mad : 'MAD',
+          next : 'Suivant',
+          previous : 'Précédant',
         },
       },
       ar: {
@@ -38,6 +59,17 @@ i18n
           shirts : 'اقمصة',
           pants :'سراويل',
           YourCart : 'السلة',
+          ourPromotions : 'عروض التخفيضات',
+          ourProducts : 'منتوجاتنا',
+          viewProduct : 'معاينة المنتج',
+          addCart : 'اضافة الى السلة',
+          soldOut : 'نفذ',
+          sizes : 'المقاسات',
+          price : 'السعر',
+          mad : "د.م",
+          next : 'التالي',
+          previous : 'السابق',
+          
         },
       },
     },
@@ -52,7 +84,7 @@ i18n
     currentLang : string;
     setCurrentLang : Dispatch<React.SetStateAction<string>>
   }
-  const selectedLang = (l:string) => {
+  export const selectedLang = (l:string) => {
     let a = '';
     switch(l){
         case    'العربية':
@@ -68,7 +100,7 @@ i18n
 }
   const langContext = createContext<langContextProps | undefined>(undefined);
   export const LangContextProvider : React.FC<{children:ReactNode}> = ({children}) =>{
-    const [currentLang, setCurrentLang] = useState<string>("");
+    const [currentLang, setCurrentLang] = useState<string>("Français");
     useEffect(()=>{
         i18n.changeLanguage(selectedLang(currentLang));
     },[currentLang])

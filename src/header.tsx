@@ -99,12 +99,13 @@ const Header: React.FC = () => {
                     <li className="text-nav text-nav-li langSelectorPhone justify-content-around">
                     <MdLanguage size={30}/>
                         <select className=""
-                                onChange={(e)=>setCurrentLang(e.target.value)}>
-                            <option>
-                                العربية
-                            </option>
+                                onChange={(e)=>setCurrentLang(e.target.value)}
+                                defaultValue={'Français'}>
                             <option>
                                 Français
+                            </option>
+                            <option>
+                                العربية
                             </option>
                             <option>
                                 English
@@ -206,17 +207,18 @@ const Header: React.FC = () => {
             <div className="LanguageSelector flex-column">
                 <MdLanguage size={25}/>
                 <select className=""
-                        onChange={(e)=>setCurrentLang(e.target.value)}>
-                <option>
-                    العربية
-                </option>
-                <option>
-                    Français
-                </option>
-                <option>
-                    English
-                </option>
-            </select>
+                        onChange={(e)=>setCurrentLang(e.target.value)}
+                        defaultValue={'Français'}>
+                    <option>
+                        Français
+                    </option>
+                    <option>
+                        العربية
+                    </option>
+                    <option>
+                        English
+                    </option>
+                </select>
             </div>
 
         </>)}

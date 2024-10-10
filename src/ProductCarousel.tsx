@@ -7,6 +7,7 @@ import { Shoe, ShoeSize,} from "./Shoes";
 import { Sandal, SandalSize } from "./Sandales";
 import { useNavigate } from "react-router-dom";
 import { useProductsContext } from "./ProductsContext";
+import { useTranslation } from "react-i18next";
 
 interface ProductCarouselProps {
   Data : Shoe[];
@@ -15,6 +16,7 @@ interface ProductCarouselProps {
 
 const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) => {
   const apiUrl = packageJson.config.backendURL;
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const {setTargetedProduct} = useProductsContext();
     const responsive = {
@@ -68,7 +70,7 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
             </div>
             <button className="btn btn-dark rounded productCView mb-0"
                     onClick={()=>getProductDetail(item, DataDetails)}>
-              View the product 
+              {t('viewProduct')} 
             </button>
 
           </div>

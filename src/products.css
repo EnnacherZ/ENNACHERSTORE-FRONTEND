@@ -6,7 +6,10 @@
     margin-bottom: 2% ;
     scroll-behavior: smooth;
 }
-
+ 
+.rtl{
+    direction: rtl;
+}
 
 .products-wrapper{
     width:calc(100% - 170px);
@@ -97,6 +100,7 @@
 .product-size-button:hover{
     background-color: black;
     color: white;
+    
 }
 .product-size-button.empty{
     width: 17%;

@@ -8,9 +8,11 @@ import { Shoe } from "./Shoes.tsx";
 import axios from "axios";
 import "./HomePage.css";
 import { TbRosetteDiscount } from "react-icons/tb";
+import { useTranslation } from "react-i18next";
 
 const HomePage: React.FC = () => {
     const apiUrl = packageJson.config.backendURL;
+    const {t} = useTranslation();
     const [allData, setAllData] = useState<Shoe[]>([])
     const [productDetails, setProductDetails] = useState([])
     const [productCPromo, setProductCPromo] = useState<Shoe[]>([])
@@ -48,7 +50,7 @@ const HomePage: React.FC = () => {
         <div className="ProductsPromoHome">
             <div className="HomeTitle fw-bold rounded">
                 <TbRosetteDiscount className="HomeTitleIcon" />
-                Our promotions
+                    {t('ourPromotions')}
                 <TbRosetteDiscount className="HomeTitleIcon" />
             </div>
             <div className="ProductsPromoAnnouncement">
@@ -58,7 +60,7 @@ const HomePage: React.FC = () => {
         <div className="ProductsHome">
         <div className="HomeTitle fw-bold rounded">
                 <TbRosetteDiscount className="HomeTitleIcon" />
-                Our product
+                 {t('ourProducts')}
                 <TbRosetteDiscount className="HomeTitleIcon" />
             </div>
             <div className="ProductsPromoAnnouncement">

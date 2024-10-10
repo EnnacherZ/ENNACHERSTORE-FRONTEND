@@ -374,8 +374,7 @@ const Cart: React.FC = () => {
 
                 </tr>
               ))}
-            </tbody>
-            
+            </tbody>   
           </table>
           <div  className='d-flex justify-content-center mb-2'> 
                 <button  className="btnCart btn btn-light border-red " 

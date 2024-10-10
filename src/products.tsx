@@ -13,6 +13,8 @@ import packageJson from "../package.json";
 import { useProductsContext } from "./ProductsContext";
 import { Sandal, SandalSize } from "./Sandales";
 import ReactPaginate from 'react-paginate';
+import { useTranslation } from "react-i18next";
+import { selectedLang, useLangContext } from "./languageContext";
 
 interface productsShow {
    pData: any;
@@ -26,6 +28,8 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
     const { setTargetedProduct } = useProductsContext();
     const navigate = useNavigate();
     const { addItem } = useCart();
+    const {t} = useTranslation();
+    const {currentLang} = useLangContext();
     const [products, setProducts] = useState<Shoe[]>([]);
     const [productDetails, setProductDetails] = useState<ShoeSize[]>([]);
     const [clickedButton, setClickedButton] = useState<{ [key: number]: number | null }>({});
@@ -113,7 +117,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
 
     const displayedProducts = products.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     const pageCount = Math.ceil(products.length / itemsPerPage);
-
+    console.log(currentLang)
     return (
         <>
             <div className="productsDiv mt-3">
@@ -140,18 +144,20 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
                                         style={{ wordSpacing: 2 }}
                                         onClick={() => getProductDetail(pro, productDetails)}>
                                         {pro.promo === 0 ? (
-                                            <span className="product-pprice">{(pro.price).toFixed(2)} MAD</span>
+                                            <span className="product-pprice">{(pro.price).toFixed(2)} {t('mad')}</span>
                                         ) : (
                                             <>
-                                                <span className="product-pprice">{(pro.price * (100 - pro.promo) * 0.01).toFixed(2)} MAD</span>
+                                                <span className="product-pprice">{(pro.price * (100 - pro.promo) * 0.01).toFixed(2)} {t('mad')}</span>
                                                 <span className="product-dprice">
-                                                    {(pro.price).toFixed(2)} MAD
+                                                    {(pro.price).toFixed(2)} {t('mad')}
                                                 </span>
                                             </>
                                         )}
                                     </div>
-                                    <div className="fw-bold ps-1 my-1 size-label" onClick={() => getProductDetail(pro, productDetails)}>
-                                        Sizes:
+                                    <div  className={`fw-bold ps-1 my-1 size-label 
+                                                    ${selectedLang(currentLang)=='ar'?'rtl':''}`} 
+                                          onClick={() => getProductDetail(pro, productDetails)}>
+                                        {t('sizes')} :
                                     </div>
                                     <div className="product-sizes-box">
                                         {sizeFilter(productDetails, pro.id).map((i, index) => (
@@ -172,9 +178,9 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
                                             onClick={() => handleCommand(pro)}
                                             disabled={!isRemaining(pro.id)}>
                                             {isRemaining(pro.id) ? (
-                                                <><FaCartPlus size={16} className="comm-icon" /> Add to cart</>
+                                                <><FaCartPlus size={16} className="comm-icon" /> {t('addCart')}</>
                                             ) : (
-                                                <><RiErrorWarningLine size={18} className="comm-icon" /> Sold out</>
+                                                <><RiErrorWarningLine size={18} className="comm-icon" /> {t('soldOut')} </>
                                             )}
                                         </button>
                                     </div>
@@ -192,8 +198,8 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
             </div>
             {products.length > 0 && (
                     <ReactPaginate
-                        previousLabel={'< Previous'}
-                        nextLabel={'Next >'}
+                        previousLabel={`< ${t('previous')}`}
+                        nextLabel={`${t('next')} >`}
                         breakLabel={'...'}
                         pageCount={pageCount}
                         marginPagesDisplayed={2}
