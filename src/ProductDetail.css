@@ -2,6 +2,7 @@
     width:100%;
     scroll-behavior: smooth;
 }
+
 .ProductDetailInfos1{
     font-size:28px;
     padding-left: 6%;
@@ -12,9 +13,12 @@
 .ProducyDetailImgs{
     width: 45%;
     height: auto;
-    position: sticky;
-    top: 110px;
 }
+.ProducyDetailImgs.phone{
+    width:96%;
+    margin: auto;
+}
+
 .ProductDetailImgDiv{
     width:90%;
     aspect-ratio: 1.2;
@@ -49,6 +53,12 @@
 .ProductDetailNP{
     width: 45%;
 }
+
+.ProductDetailNP.phone{
+    width: 96%;
+    margin: auto;
+}
+
 .ProductDetailName{
     font-size:1.8vw;
     padding-left: 6%;
@@ -56,17 +66,26 @@
     letter-spacing: 4px;
     font-weight: bold;
 }
+.ProductDetailName.phone{
+    font-size: 4.5vw;
+}
 .ProductDetailPS{
     width: 100%;
     height: auto;
     gap: 0% 30px;
+    justify-content: space-around;
 }
+
 .ProductDetailPP{
     color: green;
     font-weight: bold;
     font-size: 1.6vw;
     vertical-align: baseline;
 }
+.ProductDetailPP.phone{
+    font-size: 4vw;
+}
+
 .ProductDetailDP{
     font-weight: bold;
     text-decoration: line-through;
@@ -74,11 +93,20 @@
     font-size:1.4vw;
     vertical-align: baseline;
 }
+
+.ProductDetailDP.phone{
+    font-size: 3vw;
+}
+
 .ProductDetailDC{
     color: red;
     font-weight: bold;
     font-size: 1.4vw;
 }
+.ProductDetailDC.phone{
+    font-size: 3.8vw;
+}
+
 .ProductDetailSizesBox{
     width: 100%;
     padding-left: 6%;
@@ -114,9 +142,19 @@
 }
 .ProductDetailComButton{
     width: 80%;
-    aspect-ratio: 10;
+    height : 2.5em;
     font-size: 18px;
     background-color: black;
     color: white;
     margin-left: 10%;
+}
+
+.ProductDetailComButton.phone{
+    height : 10vw
+}
+
+.rtl{
+    direction: rtl;
+    letter-spacing: 0;
+    
 }

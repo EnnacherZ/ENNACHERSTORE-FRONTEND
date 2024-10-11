@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState } from "react";
+import React, {useEffect, useLayoutEffect, useState } from "react";
 import { useCart } from "./cartContext";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
@@ -16,7 +16,7 @@ import { useLangContext } from "./languageContext";
 const Header: React.FC = () => {
     const { itemCount } = useCart();
     const navigate = useNavigate();
-    const {setCurrentLang} = useLangContext();
+    const {setCurrentLang, currentLang} = useLangContext();
     const {t} = useTranslation();
     const [sidebar, setSidebar] =useState<boolean>(false);
     const [isPhone, setIsPhone] = useState<boolean>(false);
@@ -32,6 +32,10 @@ const Header: React.FC = () => {
         addEventListener('resize', handleResize);
         return () =>{window.removeEventListener('resize', handleResize)}
     }, [window.innerWidth])
+
+    useEffect(()=>{
+        setSidebar(false)
+    },[currentLang])
 
     const handleclick = (a:string) => {
         navigate(`${a}`)    };
@@ -100,14 +104,15 @@ const Header: React.FC = () => {
                     <MdLanguage size={30}/>
                         <select className=""
                                 onChange={(e)=>setCurrentLang(e.target.value)}
-                                defaultValue={'Français'}>
-                            <option>
+                                value={currentLang}
+                                >
+                            <option >
                                 Français
                             </option>
-                            <option>
+                            <option >
                                 العربية
                             </option>
-                            <option>
+                            <option >
                                 English
                             </option>
                         </select>
@@ -208,7 +213,7 @@ const Header: React.FC = () => {
                 <MdLanguage size={25}/>
                 <select className=""
                         onChange={(e)=>setCurrentLang(e.target.value)}
-                        defaultValue={'Français'}>
+                        value={currentLang}>
                     <option>
                         Français
                     </option>

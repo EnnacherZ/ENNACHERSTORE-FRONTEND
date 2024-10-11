@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import "./ProductDetail.css";
 import Header from "./header";
 import { Shoe, ShoeSize } from "./Shoes";
@@ -18,15 +18,30 @@ import { useProductsContext } from "./ProductsContext";
 import { Sandal, SandalSize } from "./Sandales";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import { useCart } from "./cartContext";
+import { useTranslation } from "react-i18next";
+import { selectedLang, useLangContext } from "./languageContext";
 
 const apiUrl = packageJson.config.backendURL;
 
 const ProductDetail: React.FC = () => {
     const {DetailledProduct} = useProductsContext();
     const {addItem} = useCart();
+    const {t} = useTranslation();
+    const {currentLang} = useLangContext();
     const [clickedButton, setClickedButton] = useState<{ [key: number]: number | null }>({});
     const [selectedShoeDetails, setSelectedShoeDetails] = useState<{ [key: number]: { size: number; quantity: number | null } }>({});
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+    const [isPhone, setIsPhone] = useState<boolean>()
+
+    useLayoutEffect(()=>{
+        const phone = () =>{
+            if(innerWidth<800){setIsPhone(true)}
+            else{setIsPhone(false)}
+        }
+        phone();
+        addEventListener('resize', phone);
+        return () =>{window.removeEventListener('resize', phone)}
+    },[window.innerWidth])
 
     const handleSizeClick = (shoeId: number, size: number, quantity: number) => {
         setClickedButton(prev => ({ ...prev, [shoeId]: size }));
@@ -92,8 +107,13 @@ const ProductDetail: React.FC = () => {
         <>
             <Header />
 
-            <div className="ProductDetailDiv mt-2 d-flex justify-content-around">
-                <div className="ProducyDetailImgs">
+            <div className={`ProductDetailDiv mt-2 d-flex justify-content-around ${isPhone?'flex-column ':''}`}>
+                <div className={`mt-2 mb-4 text-center 
+                                ProductDetailName phone ${isPhone?'':'d-none'} 
+                                ${selectedLang(currentLang)=='ar'?'rtl':''}`}>
+                        {t('productPreview')} 
+                    </div>
+                <div className={`ProducyDetailImgs ${isPhone?'phone':''}`}>
                     <Swiper
                         className='ProductDetailImgDiv'
                         spaceBetween={30}
@@ -124,14 +144,16 @@ const ProductDetail: React.FC = () => {
 
                     </Swiper>
                 </div>
-                <div className="mt-2 ProductDetailNP">
-                    <div className="ProductDetailInfos1 mt-2 mb-4 text-center ProductDetailName">
-                        Product Preview {window.innerWidth}
+                <div className={`mt-2 ProductDetailNP ${isPhone?'phone':''}`}>
+                    <div className={`ProductDetailInfos1 mt-2 mb-4 text-center 
+                                    ProductDetailName ${isPhone?'d-none':''} 
+                                    ${currentLang=='ar'?'rtl':''}`}>
+                        {t('productPreview')}
                     </div>
-                    <div className="ProductDetailName mt-1 mb-3 text-muted">
-                        {(DetailledProduct?.selectedProduct.category).toUpperCase()} {('SHOES')} : {(DetailledProduct?.selectedProduct.ref).toUpperCase()}
+                    <div className={`ProductDetailName mt-1 mb-3 text-muted ${isPhone?'phone':''}`}>
+                        {(DetailledProduct?.selectedProduct.category).toUpperCase()} {(DetailledProduct?.selectedProduct.productType).toUpperCase()} : {(DetailledProduct?.selectedProduct.ref).toUpperCase()}
                     </div>
-                    <div className="ProductDetailName mt-1 mb-3 text-muted">
+                    <div className={`ProductDetailName mt-1 mb-3 text-muted ${isPhone?'phone':''}`}>
                         {(DetailledProduct?.selectedProduct.name).toUpperCase()}
                     </div>
                     {DetailledProduct?.selectedProduct.promo !== 0 && (
@@ -139,26 +161,26 @@ const ProductDetail: React.FC = () => {
                             color: 'red',
                             paddingLeft: '6%',
                             fontWeight: 'bold',
-                            fontSize: '1.8vw'
+                            fontSize: isPhone?'4.5vw':'1.9vw'
                         }}>
                             <TbRosetteDiscount /> Promotion !
                         </div>
                     )}
-                    <div className="ProductDetailPS d-flex justify-content-around my-4">
-                        <div className="ProductDetailPP">
+                    <div className={`ProductDetailPS d-flex my-4 ${isPhone?'phone':''}`}>
+                        <div className={`ProductDetailPP ${isPhone?'phone':''}`}>
                             {(DetailledProduct?.selectedProduct.price * (1 - DetailledProduct?.selectedProduct.promo * 0.01)).toFixed(2)} MAD
                         </div>
-                        <div className="ProductDetailDP text-muted d-flex">
+                        <div className={`ProductDetailDP text-muted d-flex ${isPhone?'phone':''}`}>
                             {(DetailledProduct?.selectedProduct.price).toFixed(2)} MAD
                         </div>
-                        <div className="ProductDetailDC">
+                        <div className={`ProductDetailDC ${isPhone?'phone':''}`}>
                             {(DetailledProduct?.selectedProduct.promo)} % Off
                         </div>
                     </div>
                     <div className="my-2" style={{
                         paddingLeft: '6%',
                         fontWeight: 'bold',
-                        fontSize: '1.4vw'
+                        fontSize: isPhone?'3.3vw':'1.4vw'
                     }}>
                         Sizes :
                     </div>
@@ -181,7 +203,7 @@ const ProductDetail: React.FC = () => {
                     </div>
                     <div className="rounded-0 mb-0">
                         <button
-                            className="ProductDetailComButton"
+                            className={`ProductDetailComButton ${isPhone?'phone':''}`}
                             onClick={() => handleCommand(DetailledProduct?.selectedProduct)}
                             disabled={!isRemaining(DetailledProduct?.selectedProduct.id)}
                         >

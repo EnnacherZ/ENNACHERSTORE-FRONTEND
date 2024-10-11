@@ -13,7 +13,9 @@ import { MdRemoveShoppingCart } from 'react-icons/md';
 import { TbCreditCardPay } from 'react-icons/tb';
 import ReactCountryFlag from 'react-country-flag';
 import Footer from './footer.tsx';
-import packageJson from "../package.json"
+import packageJson from "../package.json";
+import { useTranslation } from 'react-i18next';
+import { selectedLang, useLangContext } from './languageContext.tsx';
 const apiUrl = packageJson.config.backendURL;
 
 
@@ -32,6 +34,8 @@ const undefinedItem : CartItem ={
 }
 const Cart: React.FC = () => {
   const navigate = useNavigate();
+  const {t} = useTranslation();
+  const {currentLang} = useLangContext();
   const [isPhoneScreen, setIsPhoneScreen] = useState<boolean>(false);
 
   const { shoesItems, removeItem, clearCart, handleMinusQuantity, handlePlusQuantity } = useCart();
@@ -152,7 +156,7 @@ const Cart: React.FC = () => {
               />
   </div> 
   <div className="d-flex align-items-center me-1"> 
-      <strong style={{fontSize:13}}> TOTAL : 100000 {selectedCurrency}</strong>
+      <strong style={{fontSize:13}}> TOTAL : 100000 {t(`${(selectedCurrency).toLowerCase()}`)}</strong>
   </div>
 
 </div>
@@ -160,30 +164,30 @@ const Cart: React.FC = () => {
 <div  className="card orderSummary d-flex shadow"
       style={{backgroundColor:"#efeded"}}>
   <div className="text-center align-middle fs-4 fw-bold my-3"
-        style={{}}> <FaMoneyCheckAlt style={{marginTop:-3}}/> ORDER SUMMARY 
+        style={{}}> <FaMoneyCheckAlt style={{marginTop:-3}}/> {t('orderSummary')}
   </div>
   <hr className="m-2"></hr>
   <div >
   <ul  className="list-group px-1"
         style={{}} >
-    <li className="list-group-item border-0 "
+    <li className={`list-group-item border-0 ${selectedLang(currentLang)=='ar'?'rtl text-end':''}`}
         style={{backgroundColor:"#efeded", fontWeight:600, fontSize:17}}>
-        Total amount : 
+        {t('totalAmount')} : 
     </li>
-    <li className="list-group-item border-0"
+    <li className={`list-group-item border-0 ${selectedLang(currentLang)=='ar'?'rtl text-end':''}`}
         style={{backgroundColor:"#efeded", fontWeight:600, fontSize:17}}>
-        Shipping : 
+        {t('shipping')} : 
     </li>
-    <li className="list-group-item border-0"
+    <li className={`list-group-item border-0 ${selectedLang(currentLang)=='ar'?'rtl text-end':''}`}
         style={{backgroundColor:"#efeded", fontWeight:600, fontSize:17}}>
-        Other : 
+        {t('other')} : 
     </li>
   </ul>
   </div>
   <hr className="m-2"></hr>
-      <div className="px-3"
+      <div className={`px-3 ${selectedLang(currentLang)=='ar'?'rtl':''}`}
             style={{fontWeight:700, fontSize:18}}>
-            Total : 
+            {t('total')} : 
       </div>
       <button className='btn btn-dark mx-1 mt-3'
               disabled={shoesItems.length==0}
@@ -219,7 +223,7 @@ const Cart: React.FC = () => {
 
 <div className="cart-div card shadow " >
   <div  className='text-center card cardEX' >
-    <div className='text-center my-2 fs-3'><b><FaShoppingCart style={{marginTop:-3, }}/> Your cart</b></div>
+    <div className='text-center my-2 fs-3'><b><FaShoppingCart style={{marginTop:-3, }}/> {t('YourCart')}</b></div>
     {shoesItems.length === 0 ? (
       <div
       className='shadow'
@@ -234,10 +238,10 @@ const Cart: React.FC = () => {
     >
       <MdRemoveShoppingCart size={50} style={{ marginBottom: "16px",  }} />
       
-      <div>There are no items in your shopping cart </div>
-      <button className='btn btn-primary mt-4'
+      <div className={`${selectedLang(currentLang)=='ar'?'rtl':''}`}>{t('nullCart')} </div>
+      <button className={`btn btn-primary mt-4 ${selectedLang(currentLang)=='ar'?'rtl':''}`}
               onClick={()=>navigate("/")}>
-        <b >Shop now!</b></button>
+        <b >{t('shopNow')} !</b></button>
 
     </div>
     ) : (
@@ -246,10 +250,10 @@ const Cart: React.FC = () => {
           <table className='table table-hover table-bordred ' style={{backgroundColor:"#efeded"}}>
             <thead>
               <tr>
-                <th className='text-muted'>Product infos</th>
+                <th className='text-muted'>{t('productInfos')}</th>
                 {!isPhoneScreen&&(<>
-                  <th className='text-muted' >Quantity/Action</th>
-                  <th className='text-muted'>Total</th></>
+                  <th className='text-muted' >{t('quantitAction')}</th>
+                  <th className='text-muted'>{t('total')}</th></>
                 )}
               </tr>
             </thead>
@@ -267,19 +271,19 @@ const Cart: React.FC = () => {
                         </div>
                         <div>{item.name}</div>
                         <div  className='vertical-align-top'>
-                          <span className="present-price me-1"><strong style={{fontSize:14}}>{(item.price*(1-item.promo*0.01)).toFixed(2)} MAD</strong></span>
+                          <span className="present-price me-1"><strong style={{fontSize:14}}>{(item.price*(1-item.promo*0.01)).toFixed(2)} {t('mad')}</strong></span>
                           <span className="deleted-price-cart  mt-1" 
                                 style={item.promo===0?{display:'none'}:{}}>
                             <strong style={{fontSize:10, 
                                             fontWeight:500,
                                             textDecoration:'line-through', 
                                             textDecorationColor:'red'}}>
-                                      {((item.price).toFixed(2))} MAD
+                                      {((item.price).toFixed(2))} {t('mad')}
                             </strong>  
                           </span>                                
                         </div>
                         <div className='text-muted'>
-                          <span style={{fontSize:14}}>Size :</span>
+                          <span style={{fontSize:14}}>{t('size')} :</span>
                           <span style={{fontSize:14}}>{item.size}</span>
                         </div>
                       </div>   
@@ -312,10 +316,10 @@ const Cart: React.FC = () => {
                   <td className='align-middle p-0' style={{width:"18%",  
                                                       fontWeight:600,
                                                       fontSize:14}}>
-                      <div style={{color:'green',}}>{(item.price*(1-0.01*item.promo) * item.quantity).toFixed(2)} MAD</div>
+                      <div style={{color:'green',}}>{(item.price*(1-0.01*item.promo) * item.quantity).toFixed(2)} {t('mad')}</div>
                       <span className="" 
                                 style={item.promo===0?{display:'none',}:{textDecoration:'line-through', textDecorationColor:'red'}}>
-                            <strong style={{fontSize:12, fontWeight:500,}}>{((item.price* item.quantity).toFixed(2))} MAD</strong>  
+                            <strong style={{fontSize:12, fontWeight:500,}}>{((item.price* item.quantity).toFixed(2))} {t('mad')}</strong>  
                       </span>
                   </td>                        
                   </>):(<>
@@ -330,12 +334,12 @@ const Cart: React.FC = () => {
                         <div className='d-flex flex-row justify-content-between '
                             style={{height:98}}>
                         <div className='priceDetailsSM'>
-                          <span className="present-price me-2"><strong style={{fontSize:14}}>{(item.price*(1-item.promo*0.01)).toFixed(2)} MAD</strong></span>
+                          <span className="present-price me-2"><strong style={{fontSize:14}}>{(item.price*(1-item.promo*0.01)).toFixed(2)} {t('mad')}</strong></span>
                           <div className={item.promo==0?'d-none':''}>
                               <b style={{color:'red'}}>{item.promo}%off </b>
                           </div>
                           <div style={{fontSize:12}}>
-                              TOTAL : <b style={{color:'green', }}>{(item.price*(1-0.01*item.promo) * item.quantity).toFixed(2)} MAD</b>
+                              TOTAL : <b style={{color:'green', }}>{(item.price*(1-0.01*item.promo) * item.quantity).toFixed(2)} {t('mad')}</b>
                           </div>                              
                         </div>                               
                         <div className='d-flex justify-content-around align-items-center'
@@ -379,7 +383,7 @@ const Cart: React.FC = () => {
           <div  className='d-flex justify-content-center mb-2'> 
                 <button  className="btnCart btn btn-light border-red " 
                           style={{fontSize:17}} 
-                          onClick={handleClearAllClick}><FaRegTrashAlt /> Clear Cart</button>
+                          onClick={handleClearAllClick}><FaRegTrashAlt /> {t("clearCart")}</button>
           </div>
 
     </>)}
