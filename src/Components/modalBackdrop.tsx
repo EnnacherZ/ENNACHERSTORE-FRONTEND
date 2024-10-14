@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import {motion} from "framer-motion";
-import "./modals.css"
+import "../Styles/modals.css"
 
 
 const ModalBackDrop : React.FC<{children:ReactNode, onClose:()=>void}> = ({children, onClose }) =>{

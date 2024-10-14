@@ -1,10 +1,9 @@
 import React, {useLayoutEffect, useState } from 'react';
-import { CartItem, useCart } from './cartContext';
+import { CartItem, useCart } from '../Contexts/cartContext';
 import {ToastContainer, Zoom, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 import Header from './header';
-import './cart.css';
-import './footer.css'
+import '../Styles/cart.css';
 import Modals from './modals';
 import { AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -13,10 +12,9 @@ import { MdRemoveShoppingCart } from 'react-icons/md';
 import { TbCreditCardPay } from 'react-icons/tb';
 import ReactCountryFlag from 'react-country-flag';
 import Footer from './footer.tsx';
-import packageJson from "../package.json";
 import { useTranslation } from 'react-i18next';
-import { selectedLang, useLangContext } from './languageContext.tsx';
-const apiUrl = packageJson.config.backendURL;
+import { selectedLang, useLangContext } from '../Contexts/languageContext.tsx';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 
 

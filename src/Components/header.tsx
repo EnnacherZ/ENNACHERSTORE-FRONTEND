@@ -1,8 +1,8 @@
 import React, {useEffect, useLayoutEffect, useState } from "react";
-import { useCart } from "./cartContext";
+import { useCart } from "../Contexts/cartContext";
 import { Link, useNavigate } from "react-router-dom";
-import "./header.css";
-import icon1 from "./assets/icon3.svg";
+import "../Styles/header.css";
+import icon1 from "../assets/icon3.svg";
 import {FaHome, FaShoppingCart, FaTshirt } from "react-icons/fa";
 import { GiSandal } from "react-icons/gi";
 import { PiPantsBold } from "react-icons/pi";
@@ -10,8 +10,8 @@ import { LiaShoePrintsSolid } from "react-icons/lia";
 import { FaAngleRight, FaShirt } from "react-icons/fa6";
 import { MdLanguage } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import "./languageContext";
-import { useLangContext } from "./languageContext";
+import "../Contexts/languageContext";
+import { useLangContext } from "../Contexts/languageContext";
 
 const Header: React.FC = () => {
     const { itemCount } = useCart();

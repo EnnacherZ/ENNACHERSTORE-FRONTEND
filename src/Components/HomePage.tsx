@@ -3,15 +3,14 @@ import Header from "./header";
 import Test from "./test";
 import Footer from "./footer.tsx";
 import ProductCarousel from "./ProductCarousel.tsx";
-import packageJson from "../package.json";
 import { Shoe } from "./Shoes.tsx";
 import axios from "axios";
-import "./HomePage.css";
+import "../Styles/HomePage.css";
 import { TbRosetteDiscount } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
 
 const HomePage: React.FC = () => {
-    const apiUrl = packageJson.config.backendURL;
+    const apiUrl = import.meta.env.VITE_API_URL
     const {t} = useTranslation();
     const [allData, setAllData] = useState<Shoe[]>([])
     const [productDetails, setProductDetails] = useState([])

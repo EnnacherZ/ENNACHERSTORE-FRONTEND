@@ -1,5 +1,5 @@
 import React from "react";
-import "./HomeProduct.css";
+import "../Styles/HomeProduct.css";
 import sandals from "./products1images/sandals.png";
 import shoe from"./products1images/shoes.png";
 import casualshirts from "./products1images/casualshirts.png";

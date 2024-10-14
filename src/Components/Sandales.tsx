@@ -1,5 +1,5 @@
 import React from "react";
-import './Sandales.css'
+import '../Styles/Sandales.css'
 import Header from "./header";
 
 

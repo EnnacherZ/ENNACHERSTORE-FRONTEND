@@ -1,12 +1,11 @@
 import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import "./ProductCarousel.css";
-import packageJson from "../package.json";
+import "../Styles/ProductCarousel.css";
 import { Shoe, ShoeSize,} from "./Shoes";
 import { Sandal, SandalSize } from "./Sandales";
 import { useNavigate } from "react-router-dom";
-import { useProductsContext } from "./ProductsContext";
+import { useProductsContext } from "../Contexts/ProductsContext";
 import { useTranslation } from "react-i18next";
 
 interface ProductCarouselProps {
@@ -15,7 +14,7 @@ interface ProductCarouselProps {
 }
 
 const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) => {
-  const apiUrl = packageJson.config.backendURL;
+  const apiUrl = import.meta.env.VITE_API_URL
   const {t} = useTranslation();
   const navigate = useNavigate();
   const {setTargetedProduct} = useProductsContext();

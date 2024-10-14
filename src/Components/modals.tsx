@@ -1,13 +1,13 @@
 import React, { useLayoutEffect, useState } from "react";
-import { CartItem } from "./cartContext";
+import { CartItem } from "../Contexts/cartContext";
 import ModalBackDrop from "./modalBackdrop";
 import { motion} from "framer-motion";
-import "./modals.css"
+import "../Styles/modals.css"
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
-import { selectedLang, useLangContext } from "./languageContext";
-import packageJson from '../package.json'
+import { selectedLang, useLangContext } from "../Contexts/languageContext";
+
 
 
 
@@ -44,7 +44,7 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
     const [isSP, setIsSP] = useState<boolean>(false);
     const {t} = useTranslation();
     const {currentLang} = useLangContext();
-    const apiUrl = packageJson.config.backendURL
+    const apiUrl = import.meta.env.VITE_API_URL
 
     useLayoutEffect(()=>{
         if(window.innerWidth<600){
@@ -81,7 +81,7 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
                     </div> 
                     <div className={`d-flex justify-content-around g-0 mt-2 ${selectedLang(currentLang)=='ar'?'rtl':''}`}
                                     style={{width:"100%", textTransform:'capitalize'}}>
-                    <div className='col-md-4  cartPriceConf1 text-start '>
+                    <div className= {`col-md-4  cartPriceConf1 ${selectedLang(currentLang)=='ar'?'':'text-start'}`}>
                             <div style={{fontSize:14,}}><strong style={{fontWeight:500}}>{t('category')} : </strong>{item.category.toLowerCase()}</div> 
                             <div style={{fontSize:14,}}><strong style={{fontWeight:500}}>{t('ref')} :</strong> {item.ref.toLowerCase()}</div>
                             <div style={{fontSize:14,}}><strong style={{fontWeight:500}}>{t('name')} :</strong> {item.name.toLowerCase()}</div> 

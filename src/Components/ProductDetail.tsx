@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import "./ProductDetail.css";
+import "../Styles/ProductDetail.css";
 import Header from "./header";
 import { Shoe, ShoeSize } from "./Shoes";
 import { TbRosetteDiscount } from "react-icons/tb";
@@ -12,16 +12,15 @@ import "swiper/css/thumbs";
 import {Swiper, SwiperSlide} from "swiper/react";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 import {Swiper as SwiperType} from "swiper";
-import packageJson from "../package.json";
 import Footer from "./footer";
-import { useProductsContext } from "./ProductsContext";
+import { useProductsContext } from "../Contexts/ProductsContext";
 import { Sandal, SandalSize } from "./Sandales";
 import { Bounce, toast, ToastContainer } from "react-toastify";
-import { useCart } from "./cartContext";
+import { useCart } from "../Contexts/cartContext";
 import { useTranslation } from "react-i18next";
-import { selectedLang, useLangContext } from "./languageContext";
+import { selectedLang, useLangContext } from "../Contexts/languageContext";
 
-const apiUrl = packageJson.config.backendURL;
+const apiUrl = import.meta.env.VITE_API_URL
 
 const ProductDetail: React.FC = () => {
     const {DetailledProduct} = useProductsContext();
@@ -147,7 +146,7 @@ const ProductDetail: React.FC = () => {
                 <div className={`mt-2 ProductDetailNP ${isPhone?'phone':''}`}>
                     <div className={`ProductDetailInfos1 mt-2 mb-4 text-center 
                                     ProductDetailName ${isPhone?'d-none':''} 
-                                    ${currentLang=='ar'?'rtl':''}`}>
+                                    ${selectedLang(currentLang)=='ar'?'rtl':''}`}>
                         {t('productPreview')}
                     </div>
                     <div className={`ProductDetailName mt-1 mb-3 text-muted ${isPhone?'phone':''}`}>
@@ -157,13 +156,14 @@ const ProductDetail: React.FC = () => {
                         {(DetailledProduct?.selectedProduct.name).toUpperCase()}
                     </div>
                     {DetailledProduct?.selectedProduct.promo !== 0 && (
-                        <div style={{
-                            color: 'red',
-                            paddingLeft: '6%',
-                            fontWeight: 'bold',
-                            fontSize: isPhone?'4.5vw':'1.9vw'
-                        }}>
-                            <TbRosetteDiscount /> Promotion !
+                        <div    className={`${selectedLang(currentLang)=='ar'?'rtl text-center':""}`}
+                                style={{
+                                    color: 'red',
+                                    paddingLeft: '6%',
+                                    fontWeight: 'bold',
+                                    fontSize: isPhone?'4.5vw':'1.9vw'
+                                }}>
+                            <TbRosetteDiscount /> {t('promotion')} !
                         </div>
                     )}
                     <div className={`ProductDetailPS d-flex my-4 ${isPhone?'phone':''}`}>
@@ -171,18 +171,19 @@ const ProductDetail: React.FC = () => {
                             {(DetailledProduct?.selectedProduct.price * (1 - DetailledProduct?.selectedProduct.promo * 0.01)).toFixed(2)} MAD
                         </div>
                         <div className={`ProductDetailDP text-muted d-flex ${isPhone?'phone':''}`}>
-                            {(DetailledProduct?.selectedProduct.price).toFixed(2)} MAD
+                            {(DetailledProduct?.selectedProduct.price).toFixed(2)} {t('mad')}
                         </div>
-                        <div className={`ProductDetailDC ${isPhone?'phone':''}`}>
-                            {(DetailledProduct?.selectedProduct.promo)} % Off
+                        <div className={`ProductDetailDC ${isPhone?'phone':''} 
+                                        ${selectedLang(currentLang)=='ar'?'rtl':''}`}>
+                            {(DetailledProduct?.selectedProduct.promo)} % {t('off')}
                         </div>
                     </div>
-                    <div className="my-2" style={{
+                    <div className={`my-2 ${selectedLang(currentLang)=='ar'?'rtl':""}`} style={{
                         paddingLeft: '6%',
                         fontWeight: 'bold',
                         fontSize: isPhone?'3.3vw':'1.4vw'
                     }}>
-                        Sizes :
+                        {t('sizes')} :
                     </div>
                     <div className="ProductDetailSizesBox">
                         {sizeFilter(DetailledProduct?.selectedProductInfos, DetailledProduct?.selectedProduct.id).map((i, index) => (
@@ -209,11 +210,11 @@ const ProductDetail: React.FC = () => {
                         >
                             {isRemaining(DetailledProduct?.selectedProduct.id) ? (
                                 <>
-                                    <FaCartPlus size={20} className="ProductDetailComIcon" /> Add to cart
+                                    <FaCartPlus size={20} className="ProductDetailComIcon" /> {t('addCart')}
                                 </>
                             ) : (
                                 <>
-                                    <RiErrorWarningLine size={20} className="ProductDetailComIcon" /> Sold out
+                                    <RiErrorWarningLine size={20} className="ProductDetailComIcon" /> {t('soldOut')}
                                 </>
                             )}
                         </button>

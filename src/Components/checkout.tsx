@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "./header";
-import "./checkout.css"
-import { clientData, usePayment } from './paymentContext';
+import "../Styles/checkout.css"
+import { clientData, usePayment } from '../Contexts/paymentContext';
 import { useForm } from 'react-hook-form';
 import { IoArrowBackOutline } from "react-icons/io5";
 import { FaPhone } from 'react-icons/fa6';
@@ -10,8 +10,6 @@ import { FaCity,FaRegUserCircle, FaUserCircle} from 'react-icons/fa';
 import { MdAlternateEmail} from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
-import './footer.css'
-
 import Footer from "./footer";
 
 type FormValues = {

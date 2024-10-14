@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "./header";
 import ProductAds from "./ProductAds.tsx";
-import "./Shoes.css";
+import "../Styles/Shoes.css";
 import { DataToFilter } from "./FilterSection";
 import Products from "./products";
 import Footer from "./footer.tsx";
 import { LiaShoePrintsSolid } from "react-icons/lia";
 import Marquee from "react-fast-marquee"
-import packageJson from '../package.json';
 import { FaCircleDot } from "react-icons/fa6";
 
 
@@ -34,7 +33,7 @@ export   interface ShoeSize {
 }
 
 const Shoes: React.FC = () => {
-  const apiUrl = packageJson.config.backendURL;
+  const apiUrl = import.meta.env.VITE_API_URL
 
   const [shoeProduct, setShoeProduct] = useState<Shoe[]>([]);
   const [filteredShoeProduct, setFilteredShoeProduct] = useState<Shoe[]>([]);

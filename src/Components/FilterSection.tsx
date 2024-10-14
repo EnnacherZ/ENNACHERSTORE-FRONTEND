@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
 import {FaSearch } from "react-icons/fa";
-import "./FilterSection.css"
+import "../Styles/FilterSection.css"
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 import { AiFillProduct } from "react-icons/ai";
 

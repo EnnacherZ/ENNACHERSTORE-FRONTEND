@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom/';
-import './products.css';
+import '../Styles/products.css';
 import { Shoe, ShoeSize } from "./Shoes";
-import { useCart } from "./cartContext";
+import { useCart } from "../Contexts/cartContext";
 import { FaCartPlus } from "react-icons/fa6";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import FilterSection, { DataToFilter } from "./FilterSection";
 import NotFound from "./NotFound";
 import { motion } from "framer-motion";
-import packageJson from "../package.json";
-import { useProductsContext } from "./ProductsContext";
+import { useProductsContext } from "../Contexts/ProductsContext";
 import { Sandal, SandalSize } from "./Sandales";
 import ReactPaginate from 'react-paginate';
 import { useTranslation } from "react-i18next";
-import { selectedLang, useLangContext } from "./languageContext";
+import { selectedLang, useLangContext } from "../Contexts/languageContext";
 
 interface productsShow {
    pData: any;
@@ -24,7 +23,7 @@ interface productsShow {
 }
 
 const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, handleFilter }) => {
-    const apiUrl = packageJson.config.backendURL;
+    const apiUrl = import.meta.env.VITE_API_URL
     const { setTargetedProduct } = useProductsContext();
     const navigate = useNavigate();
     const { addItem } = useCart();
@@ -117,7 +116,6 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
 
     const displayedProducts = products.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     const pageCount = Math.ceil(products.length / itemsPerPage);
-    console.log(currentLang)
     return (
         <>
             <div className="productsDiv mt-3">

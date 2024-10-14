@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useState, ReactNode, useEffect} from "react";
-import { Shoe, ShoeSize } from "./Shoes";
-import { Sandal, SandalSize } from "./Sandales";
+import { Shoe, ShoeSize } from "../Components/Shoes";
+import { Sandal, SandalSize } from "../Components/Sandales";
 
 interface productDetail{
     selectedProduct : Shoe | Sandal;

@@ -47,6 +47,8 @@ i18n
           clearAllItems : 'Clear all items',
           shopNow : 'Shop now',
           nullCart: 'There are no items in your shopping cart',
+          promotion : 'Promotion',
+          off : 'Off',
           
         },
       },
@@ -91,6 +93,8 @@ i18n
           clearAllItems : 'Effacer tous',
           shopNow : 'Achetez maintenant',
           nullCart: 'Il n\'y a aucun article dans votre panier',
+          promotion : 'Promotion',
+          off : 'Moins',
 
         },
       },
@@ -135,6 +139,8 @@ i18n
           clearAllItems : 'حذف الكل',
           shopNow : 'تسوق الآن',
           nullCart: 'لا يوجد أي سلع في سلة التسوق الخاصة بك',
+          promotion : 'عرض خاص',
+          off : 'تخفيض'
           
 
         },

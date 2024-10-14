@@ -1,19 +1,19 @@
 import React from "react";
-import { CartProvider } from "./cartContext";
+import { CartProvider } from "./Contexts/cartContext";
 import { BrowserRouter as Router, Route, Routes, Navigate,} from "react-router-dom";
-import HomePage from "./HomePage";
-import Shoes from "./Shoes";
-import Sandales from "./Sandales";
-import TShirts from "./TShirts";
-import Cart from "./cart";
-import Test from "./test";
+import HomePage from "./Components/HomePage";
+import Shoes from "./Components/Shoes";
+import Sandales from "./Components/Sandales";
+import TShirts from "./Components/TShirts";
+import Cart from "./Components//cart";
+import Test from "./Components//test";
 import YouCanPay  from "./payTest";
-import ScrollToTop from "./scrollToTop";
-import { PaymentProvider } from "./paymentContext";
-import Checkout from "./checkout";
-import ProductDetail from "./ProductDetail";
-import { ProductsContextProvider } from "./ProductsContext";
-import { LangContextProvider } from "./languageContext";
+import ScrollToTop from "./Components//scrollToTop";
+import { PaymentProvider } from "./Contexts/paymentContext";
+import Checkout from "./Components//checkout";
+import ProductDetail from "./Components//ProductDetail";
+import { ProductsContextProvider } from "./Contexts/ProductsContext";
+import { LangContextProvider } from "./Contexts/languageContext";
 
 
 const App : React.FC = () =>{

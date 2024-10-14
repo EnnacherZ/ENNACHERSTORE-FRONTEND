@@ -2,8 +2,8 @@ import React from "react";
 import { FaRegCopyright } from "react-icons/fa6";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import iconStoreWhite from "./assets/storeIconW.png";
-import './footer.css'
+import iconStoreWhite from "../assets/storeIconW.png";
+import '../Styles/footer.css'
 
 
 const Footer : React.FC = () => {
