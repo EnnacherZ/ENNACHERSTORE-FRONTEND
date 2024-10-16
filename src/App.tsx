@@ -10,7 +10,7 @@ import Test from "./Components//test";
 import YouCanPay  from "./payTest";
 import ScrollToTop from "./Components//scrollToTop";
 import { PaymentProvider } from "./Contexts/paymentContext";
-import Checkout from "./Components//checkout";
+import Checkout from "./Components/checkout";
 import ProductDetail from "./Components//ProductDetail";
 import { ProductsContextProvider } from "./Contexts/ProductsContext";
 import { LangContextProvider } from "./Contexts/languageContext";

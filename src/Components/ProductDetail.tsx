@@ -62,17 +62,17 @@ const ProductDetail: React.FC = () => {
 
     const handleCommand = (pro: Shoe | Sandal) => {
         if(!selectedShoeDetails[pro.id]){
-          toast.error("Size is not selected", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-          })
+            toast.error(t('toastSizeAlert'), {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
           return
         }
         const item = {
@@ -88,17 +88,16 @@ const ProductDetail: React.FC = () => {
           promo : pro.promo
         };
         addItem(item);
-        toast.success("New shoe item is added", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-        })
+        toast.success(t('toastAddSuccess') , {
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        });
       };
 
     if(!DetailledProduct){return(<>non</>)}
@@ -227,7 +226,7 @@ const ProductDetail: React.FC = () => {
                 </div>
             </div>
             <Footer />
-            <ToastContainer className={'Toast'} style={{width:"50%"}}/>
+            <ToastContainer className={'Toast'} style={{ width: "70%", marginLeft:'15%' }}/>
         </>
     );
 };

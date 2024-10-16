@@ -10,9 +10,9 @@
     box-shadow: rgba(0, 0, 0, 0.7) 0px 5px 15px;
     margin: auto;
     width:500px;
-    aspect-ratio:4;
+    aspect-ratio:6;
     z-index:100;
-    margin-top:80px;
+    margin-top:40px;
 }
 
 .parentCartConfAll{
@@ -30,7 +30,7 @@
     padding: 0;
     left:0.5%;
     width:35%;
-    height:70%;
+    height:60%;
     overflow: hidden;
 
 }
@@ -85,7 +85,7 @@
         width:335px;
         aspect-ratio:4;
         z-index:100;
-        margin-top:80px;
+        margin-top:40px;
     }
     
     .parentCartConfAll{

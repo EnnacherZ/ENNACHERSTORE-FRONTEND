@@ -49,6 +49,8 @@ i18n
           nullCart: 'There are no items in your shopping cart',
           promotion : 'Promotion',
           off : 'Off',
+          toastSizeAlert : 'Size is not selected !',
+          toastAddSuccess : 'A new shoe item is added !',
           
         },
       },
@@ -95,6 +97,8 @@ i18n
           nullCart: 'Il n\'y a aucun article dans votre panier',
           promotion : 'Promotion',
           off : 'Moins',
+          toastSizeAlert : "La taille n'est pas choisie !",
+          toastAddSuccess : "Une nouvelle chaussure est ajoutée !",
 
         },
       },
@@ -140,7 +144,9 @@ i18n
           shopNow : 'تسوق الآن',
           nullCart: 'لا يوجد أي سلع في سلة التسوق الخاصة بك',
           promotion : 'عرض خاص',
-          off : 'تخفيض'
+          off : 'تخفيض',
+          toastSizeAlert : "! لم يتم اختيار مقاس محدد",
+          toastAddSuccess : "! تمت اضافة عنصر جديد الى السلة ",
           
 
         },

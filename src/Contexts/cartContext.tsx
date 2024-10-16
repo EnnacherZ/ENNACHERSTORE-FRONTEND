@@ -19,6 +19,12 @@ export interface AllItems {
   Clothes : CartItem[];
   Pants : CartItem[]
 }
+export interface AllItemsPrice {
+  amountShoes: number;
+  amountSandals: number;
+  amountClothes : number;
+  amountPants : number
+}
 
 export interface CartContextType {
   allItems : AllItems;
@@ -27,6 +33,8 @@ export interface CartContextType {
   clothesItems : CartItem[];
   pantsItems : CartItem[];
   itemCount: number;
+  cartTotalAmount : AllItemsPrice;
+  total : number;
   addItem: (item: CartItem) => void;
   removeItem: (item: CartItem) => void;
   clearCart: () => void;
@@ -37,6 +45,13 @@ export interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [cartTotalAmount, setCartTotalAmount] = useState<AllItemsPrice>({
+    amountShoes: 0,
+    amountSandals: 0,
+    amountClothes : 0,
+    amountPants : 0
+  });
+  const total = cartTotalAmount.amountShoes + cartTotalAmount.amountSandals + cartTotalAmount.amountPants + cartTotalAmount.amountClothes;
   const [shoesItems, setShoesItems] = useState<CartItem[]>(() => {
     try {
       const savedShoesItems = localStorage.getItem('CartShoesItems');
@@ -109,6 +124,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     try {
       localStorage.setItem('CartShoesItems', JSON.stringify(shoesItems));
+      const amount:number  = (shoesItems.reduce((acc, item)=>(acc +(item.price*(1-item.promo*0.01)*item.quantity)), 0))
+      setCartTotalAmount((prevTotal) => ({
+        ...prevTotal,
+        amountShoes: Math.round(amount * 100) / 100, 
+      }));
     } catch (error) {
       console.error('Error saving CartItems to localStorage:', error);
     }
@@ -116,6 +136,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     try {
       localStorage.setItem('CartSandalsItems', JSON.stringify(sandalsItems));
+      const amount:number  = sandalsItems.reduce((acc, item)=>(acc +(item.price*(1-item.promo*0.01)*item.quantity)), 0)
+      setCartTotalAmount((prevTotal) => ({
+        ...prevTotal,
+        amountSandals: Math.round(amount * 100) / 100, 
+      }));
     } catch (error) {
       console.error('Error saving CartItems to localStorage:', error);
     }
@@ -123,6 +148,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     try {
       localStorage.setItem('CartClothesItems', JSON.stringify(clothesItems));
+      const amount:number  = clothesItems.reduce((acc, item)=>(acc +(item.price*(1-item.promo*0.01)*item.quantity)), 0)
+      setCartTotalAmount((prevTotal) => ({
+        ...prevTotal,
+        amountClothes: Math.round(amount * 100) / 100, 
+      }));
     } catch (error) {
       console.error('Error saving CartItems to localStorage:', error);
     }
@@ -130,6 +160,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     try {
       localStorage.setItem('CartPantsItems', JSON.stringify(pantsItems));
+      const amount:number  = pantsItems.reduce((acc, item)=>(acc +(item.price*(1-item.promo*0.01)*item.quantity)), 0)
+      setCartTotalAmount((prevTotal) => ({
+        ...prevTotal,
+        amountPants: Math.round(amount * 100) / 100, 
+      }));
     } catch (error) {
       console.error('Error saving CartItems to localStorage:', error);
     }
@@ -267,6 +302,8 @@ const handleMinusQuantity = (item:CartItem) =>{
                                   clothesItems, 
                                   pantsItems, 
                                   itemCount, 
+                                  cartTotalAmount,
+                                  total,
                                   addItem, 
                                   removeItem, 
                                   clearCart, 

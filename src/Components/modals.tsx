@@ -51,8 +51,7 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
             setIsSP(true);
         }else{setIsSP(false)}
     }, [window.innerWidth])
-    console.log(isSP)
-
+    
     return(<>
     <ModalBackDrop onClose={onBack} >
         <motion.div
@@ -73,8 +72,8 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
                     {t('removeItem')}
                 </div >
 
-                    <div className=" d-flex flex-column align-items-center card-body px-0 mb-2"
-                     style={{width:"100%", aspectRatio:10, marginTop:"3%",paddingTop:"5%"}}>
+                    <div className=" d-flex flex-column align-items-center justify-content-between card-body px-0 mb-2"
+                     style={{width:"100%", aspectRatio:18, marginTop:"3%",paddingTop:"5%"}}>
                     <div className='col-md-4 imgCartConf py-1 px-1' >
                         <img src={`${apiUrl}${item.image}`} className='imgCartImgConf rounded' />
                         
@@ -123,7 +122,7 @@ const Modals : React.FC<cartConfirmProps> =({item, cible, onBack, onRemove, onCl
                     {t('deleteConf')}
                 </div>
                 <hr></hr>
-                <div className={`ms-3 mt-1 ${selectedLang(currentLang)=='ar'?'rtl me-2':''}`} style={{fontSize:16, marginTop:"1%"}}>
+                <div className={`mx-3 mt-1 ${selectedLang(currentLang)=='ar'?'rtl me-2':''}`} style={{fontSize:16, marginTop:"1%"}}>
                     {t('removeAll')}
                 </div >
                 <div className="align-bottom mt-4"

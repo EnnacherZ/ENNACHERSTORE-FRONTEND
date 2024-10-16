@@ -1,10 +1,10 @@
 import React, {useLayoutEffect, useState } from 'react';
-import { CartItem, useCart } from '../Contexts/cartContext';
+import { CartItem, useCart } from '../Contexts/cartContext.tsx';
 import {ToastContainer, Zoom, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
-import Header from './header';
+import Header from './header.tsx';
 import '../Styles/cart.css';
-import Modals from './modals';
+import Modals from './modals.tsx';
 import { AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { FaMoneyCheckAlt, FaRegTrashAlt, FaShoppingCart } from "react-icons/fa";
@@ -13,7 +13,7 @@ import { TbCreditCardPay } from 'react-icons/tb';
 import ReactCountryFlag from 'react-country-flag';
 import Footer from './footer.tsx';
 import { useTranslation } from 'react-i18next';
-import { selectedLang, useLangContext } from '../Contexts/languageContext.tsx';
+import { selectedLang, useLangContext } from "../Contexts/languageContext.tsx"
 const apiUrl = import.meta.env.VITE_API_URL;
 
 
@@ -33,6 +33,7 @@ const undefinedItem : CartItem ={
 const Cart: React.FC = () => {
   const navigate = useNavigate();
   const {t} = useTranslation();
+  const {total} = useCart();
   const {currentLang} = useLangContext();
   const [isPhoneScreen, setIsPhoneScreen] = useState<boolean>(false);
 
@@ -168,24 +169,31 @@ const Cart: React.FC = () => {
   <div >
   <ul  className="list-group px-1"
         style={{}} >
-    <li className={`list-group-item border-0 ${selectedLang(currentLang)=='ar'?'rtl text-end':''}`}
+    <li className={`py-3 px-2 border-0 d-flex justify-content-between
+                  ${selectedLang(currentLang)=='ar'?'rtl ':''}`}
         style={{backgroundColor:"#efeded", fontWeight:600, fontSize:17}}>
-        {t('totalAmount')} : 
+        {t('totalAmount')}: 
+        <b style={{color:'green'}} >
+          {total} {t('mad')}
+        </b>
     </li>
-    <li className={`list-group-item border-0 ${selectedLang(currentLang)=='ar'?'rtl text-end':''}`}
+    <li className={`py-3 px-2 border-0 d-flex justify-content-between
+                   ${selectedLang(currentLang)=='ar'?'rtl text-end':''}`}
         style={{backgroundColor:"#efeded", fontWeight:600, fontSize:17}}>
-        {t('shipping')} : 
-    </li>
-    <li className={`list-group-item border-0 ${selectedLang(currentLang)=='ar'?'rtl text-end':''}`}
-        style={{backgroundColor:"#efeded", fontWeight:600, fontSize:17}}>
-        {t('other')} : 
+        {t('shipping')}: 
+        <b style={{color:'green'}} >
+          0 {t('mad')}
+        </b>
     </li>
   </ul>
   </div>
   <hr className="m-2"></hr>
-      <div className={`px-3 ${selectedLang(currentLang)=='ar'?'rtl':''}`}
+      <div className={`px-3 d-flex justify-content-between ${selectedLang(currentLang)=='ar'?'rtl text-end':''}`}
             style={{fontWeight:700, fontSize:18}}>
-            {t('total')} : 
+            {t('total')}: 
+            <b style={{color:'green'}} >
+              {total} {t('mad')}
+            </b>
       </div>
       <button className='btn btn-dark mx-1 mt-3'
               disabled={shoesItems.length==0}

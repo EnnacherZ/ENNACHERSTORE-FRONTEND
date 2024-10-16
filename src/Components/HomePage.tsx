@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./header";
-import Test from "./test";
+import Test from "./test.tsx";
 import Footer from "./footer.tsx";
 import ProductCarousel from "./ProductCarousel.tsx";
 import { Shoe } from "./Shoes.tsx";

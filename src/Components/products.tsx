@@ -66,7 +66,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
 
     const handleCommand = (shoe: Shoe) => {
         if (!selectedShoeDetails[shoe.id]) {
-            toast.error("Size is not selected", {
+            toast.error(t('toastSizeAlert'), {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -92,8 +92,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
             promo: shoe.promo
         };
         addItem(item);
-        toast.success("New shoe item is added", {
-            position: "top-center",
+        toast.success(t('toastAddSuccess') , {
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: false,
@@ -191,7 +190,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
                 {products.length === 0 && (
                     <NotFound onReset={() => { window.location.reload(); window.scrollTo(0, 0); }} />
                 )}
-                <ToastContainer className={'Toast'} style={{ width: "50%" }} />
+                <ToastContainer className={'Toast'} style={{ width: "70%", marginLeft:'15%' }} />
                 
             </div>
             {products.length > 0 && (
