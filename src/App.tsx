@@ -7,13 +7,14 @@ import Sandales from "./Components/Sandales";
 import TShirts from "./Components/TShirts";
 import Cart from "./Components//cart";
 import Test from "./Components//test";
-import YouCanPay  from "./payTest";
 import ScrollToTop from "./Components//scrollToTop";
 import { PaymentProvider } from "./Contexts/paymentContext";
 import Checkout from "./Components/checkout";
 import ProductDetail from "./Components//ProductDetail";
 import { ProductsContextProvider } from "./Contexts/ProductsContext";
 import { LangContextProvider } from "./Contexts/languageContext";
+import PaymentComponent from "./payTest";
+
 
 
 const App : React.FC = () =>{
@@ -35,7 +36,7 @@ const App : React.FC = () =>{
             <Route path="/Shirts"  element={<TShirts/>} />
             <Route path="/YourCart" element={<Cart/>}/>
             <Route path="/Checkout" element={<Checkout/>}/>
-            <Route path="/pay" element={<YouCanPay pubKey="pub_sandbox_1bfc0387-7aea-49ab-b51e-930e5" tokenId='fake-token-id-for-testing'/>}/>
+            <Route path="/pay" element={<PaymentComponent/>}/>
           </Routes>
         </Router>
       </ProductsContextProvider>

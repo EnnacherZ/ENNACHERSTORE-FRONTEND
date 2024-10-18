@@ -1,61 +1,102 @@
-import React, { useEffect } from 'react';
-import useScript from './funcycn';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-interface YouCanPayProps {
-  pubKey: string;
-  tokenId: string;
-}
 
-const YouCanPay: React.FC<YouCanPayProps> = ({ pubKey, tokenId }) => {
-  useScript('https://youcanpay.com/js/ycpay.js');
 
-  useEffect(() => {
-    const initPayment = () => {
-      const ycPay = new (window as any).YCPay(pubKey, {
-        formContainer: '#payment-container',
-      });
+const PaymentComponent: React.FC = () => {
+    const [amount, setAmount] = useState<number>(0);
+    const [tokenId, setTokenId] = useState();
+    const [error, setError] = useState<string | null>(null);
+    const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
 
-      // Render the form
-      ycPay.renderAvailableGateways();
+    useEffect(() => {
+        // Charger le script YCPay dynamiquement
+        const script = document.createElement('script');
+        script.src = 'https://youcanpay.com/js/ycpay.js';
+        script.async = true;
+        script.onload = () => setIsScriptLoaded(true);
+        document.body.appendChild(script);
 
-      // Start the payment on button click
-      document.getElementById('pay')?.addEventListener('click', function () {
-        ycPay
-          .pay(tokenId)
-          .then((response: any) => {
-            successCallback(response);
-          })
-          .catch((response: any) => {
-            errorCallback(response);
-          });
-      });
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
 
-      const successCallback = (response: any) => {
-        console.log('Payment successful:', response);
-        // Your success logic here
-      };
+    const handleTokenize = async () => {
+        const url = 'https://youcanpay.com/api/tokenize';
 
-      const errorCallback = (response: any) => {
-        console.error('Payment error:', response);
-        // Your error handling logic here
-      };
+        const data = {
+            pri_key: 'pri_sandbox_a54c2b28-f8e5-4920-a440-64003',
+            order_id: '12',
+            amount: 500,
+            currency: 'MAD',
+            success_url: 'https://yourdomain.com/orders-status/success',
+            error_url: 'https://yourdomain.com/orders-status/failed',
+            
+        };
+
+        try {
+            const result = await axios.post(url, data, {
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+            setTokenId(result.data.token.id);
+            
+        } catch (err) {
+            console.log(err);
+            setError('Erreur lors de la tokenisation du paiement.');
+        }
     };
 
-    if ((window as any).YCPay) {
-      initPayment();
-    } else {
-      const script = document.querySelector(`script[src="https://youcanpay.com/js/ycpay.js"]`);
-      script?.addEventListener('load', initPayment);
-    }
-  }, [pubKey, tokenId]);
+    useEffect(() => {
+        if (isScriptLoaded && tokenId) {
+            const ycPay = new YCPay('pub_sandbox_1bfc0387-7aea-49ab-b51e-930e5', {
+                locale: 'en',
+                isSandbox: true,
+                errorContainer: '#error-container',
+                formContainer: '#payment-container'
+            });
+            // render the payment methods
+            ycPay.renderCreditCardForm('default')
+            // Ajouter un gestionnaire d'événements pour le bouton de paiement
+            const payButton = document.getElementById('pay');
+            if (payButton) {
+                payButton.addEventListener('click', function() {
+                    ycPay.pay(tokenId)
+                        .then(successCallback)
+                        .catch(errorCallback);
+                });
+            }
+        }
+    }, [isScriptLoaded, tokenId]);
 
-  return (
-    <div>
-      <div id="error-container"></div>
-      <div id="payment-container"></div>
-      <button id="pay">Pay</button>
-    </div>
-  );
+    const successCallback = (response: any) => {
+        // Votre code ici pour gérer le succès
+        console.log('Payment successful:', response);
+    };
+
+    const errorCallback = (response: any) => {
+        // Votre code ici pour gérer l'erreur
+        console.error('Payment error:', response);
+    };
+    console.log(tokenId)
+    return (
+        <div>
+            <h1>Effectuer un paiement</h1>
+            {error && <div style={{ color: 'red' }}>{error}</div>}
+            <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(Number(e.target.value))}
+                placeholder="Montant"
+            />
+            <button onClick={handleTokenize}>Tokeniser le paiement</button>
+            <button id="pay" disabled={!tokenId}>Payer</button> {/* Bouton de paiement */}
+            <div id="error-container"></div>
+            <div id="payment-container"></div>
+        </div>
+    );
 };
 
-export default YouCanPay;
+export default PaymentComponent;
