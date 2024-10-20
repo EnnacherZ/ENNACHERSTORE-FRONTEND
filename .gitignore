@@ -28,3 +28,5 @@ dist-ssr
 
 api.tsx
 ProtectedRoute.tsx
+payTest.tsx
+payTest1.tsx

@@ -6,11 +6,12 @@ export interface clientData{
     Email : string;
     Tel: string;
     City: string;
-    Address : string
+    Address : string;
+    customerId : string;
 }
 
 export interface paymentContextProps { 
-    clientForm : clientData;
+    clientForm : clientData | undefined;
     setClientForm : (data:clientData) => void;
     
 }
@@ -19,22 +20,16 @@ const paymentContext = createContext<paymentContextProps|undefined>(undefined)
 
 export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
 
-    const [clientForm, setClientForm] = useState<clientData>(()=>{
-        try{
+    const [clientForm, setClientForm] = useState<clientData | undefined>(() => {
+        try {
             const savedClientData = sessionStorage.getItem("ClientData");
-            if(savedClientData!=undefined){
-                return JSON.parse(savedClientData)
-            }return {
-                FirstName: '',
-                LastName: '',
-                Email: '',
-                Tel: '',
-                City: '',
-                Address: ''
-            };
-        }catch(error){
-            console.error('Error parsing clientData from localStorage:', error);
-      return ;
+            if (savedClientData === null || savedClientData==undefined) { // Vérifie si c'est null
+                return undefined;
+            }
+            return JSON.parse(savedClientData);
+        } catch(err){
+            console.log(err)
+            return undefined; // Retourne undefined en cas d'erreur
         }
     });
 
@@ -57,7 +52,7 @@ export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
 export const usePayment = (): paymentContextProps => {
     const context = useContext(paymentContext);
     if (context === undefined) {
-      throw new Error('usePayment must be used within a CartProvider');
+      throw new Error('usePayment must be used within a PaymentProvider');
     }
     return context;
   };
