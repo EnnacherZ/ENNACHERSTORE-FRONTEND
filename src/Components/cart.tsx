@@ -196,7 +196,7 @@ const Cart: React.FC = () => {
             </b>
       </div>
       <button className='btn btn-dark mx-1 mt-3'
-              disabled={shoesItems.length==0}
+              
               onClick={()=>navigate("/Checkout")}>
             <TbCreditCardPay  style={{marginTop:-3, }} className='me-2'/> Checkout now!
       </button>
