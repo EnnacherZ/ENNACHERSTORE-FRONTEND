@@ -13,8 +13,7 @@ import Checkout from "./Components/checkout";
 import ProductDetail from "./Components//ProductDetail";
 import { ProductsContextProvider } from "./Contexts/ProductsContext";
 import { LangContextProvider } from "./Contexts/languageContext";
-import PaymentComponent from "./payTest";
-import PaymentComponent1 from "./payTest1";
+
 
 
 
@@ -37,8 +36,6 @@ const App : React.FC = () =>{
             <Route path="/Shirts"  element={<TShirts/>} />
             <Route path="/YourCart" element={<Cart/>}/>
             <Route path="/Checkout" element={<Checkout/>}/>
-            <Route path="/pay" element={<PaymentComponent/>}/>
-            <Route path="/pay1" element={<PaymentComponent1/>}/>
           </Routes>
         </Router>
       </ProductsContextProvider>
