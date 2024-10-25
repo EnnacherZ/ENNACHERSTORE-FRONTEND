@@ -1,4 +1,7 @@
-import React, {useState, useEffect, createContext, useContext, ReactNode} from "react";
+import React, {useState, useEffect, createContext, useContext, ReactNode, Dispatch} from "react";
+import { ShoeSize } from "../Components/Shoes";
+import { SandalSize } from "../Components/Sandales";
+import { useCart } from "./cartContext";
 
 export interface clientData{
     FirstName : string;
@@ -7,19 +10,37 @@ export interface clientData{
     Tel: string;
     City: string;
     Address : string;
-    customerId : string;
+    OrderId : string;
 }
+export interface PaymentResponse {
+    code: string;                 
+    is_success: boolean;         
+    message: string;             
+    order_id: string;             
+    success: boolean;            
+    transaction_id: string;       
+}
+
+
 
 export interface paymentContextProps { 
     clientForm : clientData | undefined;
     setClientForm : (data:clientData) => void;
+    paymentResponse : PaymentResponse | undefined;
+    setPaymentResponse : Dispatch<React.SetStateAction<PaymentResponse | undefined>>;
+    shoesOrder : ShoeSize[];
+    sandalsOrder : SandalSize[];
+    
     
 }
 
 const paymentContext = createContext<paymentContextProps|undefined>(undefined)
 
 export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
-
+    const {shoesItems, sandalsItems} = useCart();
+    const [shoesOrder, setShoesOrder] = useState<ShoeSize[]>([]);
+    const [sandalsOrder, setSandalsOrder] = useState<SandalSize[]>([])
+    const [paymentResponse, setPaymentResponse] = useState<PaymentResponse>();
     const [clientForm, setClientForm] = useState<clientData | undefined>(() => {
         try {
             const savedClientData = sessionStorage.getItem("ClientData");
@@ -41,10 +62,37 @@ export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
         }
     },[clientForm])
 
+    useEffect(()=>{
+        const order :ShoeSize[] = [];
+        for(const p of shoesItems){
+            order.push({productId : p.id,
+                        size : p.size,
+                        quantity : p.quantity
+            })
+        }
+        setShoesOrder(order)
+    },[shoesItems])
+    useEffect(()=>{
+        const order :SandalSize[] = [];
+        for(const p of sandalsItems){
+            order.push({productId : p.id,
+                        size : p.size,
+                        quantity : p.quantity
+            })
+        }
+        setSandalsOrder(order)
+    },[sandalsItems])
+
+
 
 
     return(
-        <paymentContext.Provider value={{clientForm, setClientForm}}>
+        <paymentContext.Provider value={{clientForm, 
+                                        setClientForm,
+                                        paymentResponse,
+                                        setPaymentResponse,
+                                        shoesOrder,
+                                        sandalsOrder}}>
             {children}
         </paymentContext.Provider>
     )

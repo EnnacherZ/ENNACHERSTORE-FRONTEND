@@ -12,11 +12,12 @@ export interface DataToFilter {
 }
 export interface FilterSectionProps{
     handleFilter : (criteria : DataToFilter) => void;
-    productType : string
+    productType : string;
+    handleReset : ()=>void;
 }
 
 
-const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType}) =>{
+const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType, handleReset}) =>{
     
     const [selectedCategory, setSelectedCategory] = useState('')
     const [isPhone, setIsPhone] = useState<boolean>(false)
@@ -74,10 +75,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({handleFilter, productType}
         return itemCategory;  
         }
 
-
-    const handleReset = () => {
-        window.location.reload()
-    }
     const handleSearch = () =>{
         handleFilter(selectedCriteria);
         if(isDroppedFilter){

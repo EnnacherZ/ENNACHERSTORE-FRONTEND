@@ -13,7 +13,10 @@ import Checkout from "./Components/checkout";
 import ProductDetail from "./Components//ProductDetail";
 import { ProductsContextProvider } from "./Contexts/ProductsContext";
 import { LangContextProvider } from "./Contexts/languageContext";
-
+import { DataContextProvider } from "./Contexts/dataContext";
+import SuccessTrans from "./Components/successTrans";
+import PdfGenerator from "./pdf";
+import Loading from "./Components/loading";
 
 
 
@@ -21,12 +24,14 @@ const App : React.FC = () =>{
 
     return(
       <LangContextProvider>
-      <PaymentProvider>
+      <DataContextProvider>
       <CartProvider>
+      <PaymentProvider>
       <ProductsContextProvider>
       <Router>
           <ScrollToTop/>
           <Routes>
+            <Route path="/load" element={<Loading message="loading"/>}/>
             <Route path='productDetail/:productType/:category/:ref' element={<ProductDetail/>}/>
             <Route path="/test" element={<Test/>}/>
             <Route path="/" element={<Navigate to="/Home"/>}/>
@@ -36,11 +41,14 @@ const App : React.FC = () =>{
             <Route path="/Shirts"  element={<TShirts/>} />
             <Route path="/YourCart" element={<Cart/>}/>
             <Route path="/Checkout" element={<Checkout/>}/>
+            <Route path="/Trans" element={<SuccessTrans/>}/>
+            <Route path="/pdf" element={<PdfGenerator/>}/>
           </Routes>
-        </Router>
+      </Router>
       </ProductsContextProvider>
-      </CartProvider>
       </PaymentProvider>
+      </CartProvider>
+      </DataContextProvider>
       </LangContextProvider>
     );
 

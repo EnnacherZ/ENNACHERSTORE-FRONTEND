@@ -66,6 +66,7 @@ i18n
           saveMod : 'Save modifications',
           modify:'Modify',
           pay:'Pay',
+          loading : 'Loading . . .',
 
 
           
@@ -130,8 +131,8 @@ i18n
           save : 'Sauvegarder',
           saveMod : 'Sauvegarder les modifications',
           modify:'Modifier',
-          pay : 'Payer'
-
+          pay : 'Payer',
+          loading : 'Chargement . . .',
         },
       },
       ar: {
@@ -193,7 +194,8 @@ i18n
           save : 'حفظ',
           saveMod : 'حفظ التغييرات',
           modify:'تعديل',
-          pay : 'دفع'
+          pay : 'دفع',
+          loading : '. . . جاري التحميل ',
 
         },
       },

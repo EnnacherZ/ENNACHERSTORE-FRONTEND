@@ -8,6 +8,7 @@ import Footer from "./footer.tsx";
 import { LiaShoePrintsSolid } from "react-icons/lia";
 import Marquee from "react-fast-marquee"
 import { FaCircleDot } from "react-icons/fa6";
+import { useDataContext } from "../Contexts/dataContext.tsx";
 
 
 export interface Shoe {
@@ -33,51 +34,23 @@ export   interface ShoeSize {
 }
 
 const Shoes: React.FC = () => {
-  const apiUrl = import.meta.env.VITE_API_URL
-
-  const [shoeProduct, setShoeProduct] = useState<Shoe[]>([]);
+  const {shoesData, shoesDataDetails} = useDataContext();
   const [filteredShoeProduct, setFilteredShoeProduct] = useState<Shoe[]>([]);
-  const [shoeSizesProduct, setShoeSizesProduct] = useState<ShoeSize[]>([]);
-  const [selectedCriteria, setSelectedCriteria] = useState<DataToFilter>({
-        product : "",
-        category : "",
-        ref : "",
-        name : "",})
+  const [selectedCriteria, setSelectedCriteria] = useState<DataToFilter>(
+    {product : '',
+    category : '',
+    ref : '',
+    name : ''}
+  )
   
 
   useEffect(() => {
-    const eventSourceShoes = new EventSource(`${apiUrl}events/shoes/`);
-    const eventSourceShoeSizes = new EventSource(`${apiUrl}events/shoe_sizes/`);
-
-    eventSourceShoes.onmessage = (event) => {
-      const { list_shoes } = JSON.parse(event.data);
-      setShoeProduct(list_shoes);
-      if(selectedCriteria){
-        const filtredStreamedShoes = filterData(list_shoes, selectedCriteria);
+    const show = () =>{
+        const filtredStreamedShoes = filterData(shoesData, selectedCriteria);
         setFilteredShoeProduct(filtredStreamedShoes); 
-      }else{ setFilteredShoeProduct(list_shoes);};
-      
-    };
-
-    eventSourceShoeSizes.onmessage = (event) => {
-      const { list_shoeSizes } = JSON.parse(event.data);
-      setShoeSizesProduct(list_shoeSizes);
-    };
-
-    eventSourceShoes.onerror = (error) => {
-      console.error('EventSource failed:', error);
-    };
-
-    eventSourceShoeSizes.onerror = (error) => {
-      console.error('EventSource failed:', error);
-    };
-
-    return () => {
-      eventSourceShoes.close();
-      eventSourceShoeSizes.close();
-    };
-  }, [selectedCriteria]);
-
+      };
+      show();
+  }, [selectedCriteria, shoesData]);
 
   const filterData = (data: Shoe[], criterias: DataToFilter) => {
     return data.filter((item) => {
@@ -100,9 +73,17 @@ const Shoes: React.FC = () => {
 
   const handleShoeSearch = (criterias: DataToFilter) => {
     setSelectedCriteria(criterias);
-    const filteredShoes = filterData(shoeProduct, criterias);
+    const filteredShoes = filterData(shoesData, criterias);
     setFilteredShoeProduct(filteredShoes);
   };
+  const handleReset = ()=>{
+    setSelectedCriteria(
+      {product : '',
+        category : '',
+        ref : '',
+        name : ''}
+    )
+  }
 
   return (<>
 
@@ -130,7 +111,11 @@ const Shoes: React.FC = () => {
 
       </Marquee>
     </div>
-    <Products pData={filteredShoeProduct} pDataDetails={shoeSizesProduct} productShowed="Shoe" handleFilter={handleShoeSearch}/>
+    <Products pData={filteredShoeProduct} 
+              pDataDetails={shoesDataDetails} 
+              productShowed="Shoe" 
+              handleFilter={handleShoeSearch}
+              handleReset={handleReset}/>
 
     <Footer/>
 

@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
+
+
 export interface CartItem {
   product: string;
   id: number;
@@ -193,6 +195,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const addItem = (item: CartItem) => {
     if(item.product==='Shoe'){
+
       if(shoesItems.find((it)=>it.id===item.id && it.size ===item.size)){
         setShoesItems((prevItems)=>prevItems.map((it)=>it.id===item.id&&it.size===item.size?
           {...it, quantity :it.quantity+=1}:it))

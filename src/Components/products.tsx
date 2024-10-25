@@ -7,22 +7,23 @@ import { FaCartPlus } from "react-icons/fa6";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import FilterSection, { DataToFilter } from "./FilterSection";
-import NotFound from "./NotFound";
 import { motion } from "framer-motion";
 import { useProductsContext } from "../Contexts/ProductsContext";
 import { Sandal, SandalSize } from "./Sandales";
 import ReactPaginate from 'react-paginate';
 import { useTranslation } from "react-i18next";
 import { selectedLang, useLangContext } from "../Contexts/languageContext";
+import Loading from "./loading";
 
 interface productsShow {
    pData: any;
    pDataDetails: any;
    productShowed: string;
    handleFilter: (criteria: DataToFilter) => void;
+   handleReset : ()=>void;
 }
 
-const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, handleFilter }) => {
+const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, handleFilter, handleReset }) => {
     const apiUrl = import.meta.env.VITE_API_URL
     const { setTargetedProduct } = useProductsContext();
     const navigate = useNavigate();
@@ -118,7 +119,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
     return (
         <>
             <div className="productsDiv mt-3">
-                <FilterSection handleFilter={handleFilter} productType={productShowed} />
+                <FilterSection handleFilter={handleFilter} productType={productShowed} handleReset={handleReset}/>
                 {products.length > 0 && (
                     <div className="products-wrapper">
                         {displayedProducts.map((pro) => (
@@ -188,7 +189,9 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
                     </div>
                 )}
                 {products.length === 0 && (
-                    <NotFound onReset={() => { window.location.reload(); window.scrollTo(0, 0); }} />
+                    <>
+                        <Loading message="Products loading . . ."/>
+                    </>
                 )}
                 <ToastContainer className={'Toast'} style={{ width: "70%", marginLeft:'15%' }} />
                 

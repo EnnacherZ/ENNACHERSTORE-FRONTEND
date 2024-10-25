@@ -16,6 +16,10 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from 'uuid';
 import { CurrencyCode, YouCanPay } from "youcan-payment-nodejs-sdk";
 import { useLangContext, selectedLang } from "../Contexts/languageContext"; 
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import axios from "axios";
+import { useCart } from "../Contexts/cartContext";
+import Loading from "./loading";
 
 type FormValues = {
   FirstName : string;
@@ -28,17 +32,20 @@ type FormValues = {
 
 }
 
-
+const apiUrl = import.meta.env.VITE_API_URL
 const Checkout :  React.FC = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
+    const {clearCart} = useCart();
     const {currentLang} = useLangContext();
-    const {setClientForm, clientForm} = usePayment();
+    const {setClientForm, clientForm, setPaymentResponse, shoesOrder, sandalsOrder} = usePayment();
     const [isPhone, setIsPhone]= useState<boolean>()
     const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
     const [tokenId, setTokenId] = useState<string>();
     const [selectedCurrency, setSelectedCurrency] = useState<string>('MAD')
     const [isModify, setIsModify] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const wait = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
     const flN = () => {if(clientForm){return  clientForm?.FirstName+' '+clientForm?.LastName}else{return ''}}
     const Clientform = useForm<FormValues>({
       
@@ -91,7 +98,7 @@ const Checkout :  React.FC = () => {
            Tel : getValues('Tel'),
            City : getValues('City'),
            Address : getValues('Address'),
-           customerId : uuidv4()
+           OrderId : uuidv4()
          }
          setClientForm(clientCoord)
          setIsModify(true)
@@ -138,18 +145,18 @@ const Checkout :  React.FC = () => {
                 amount: 500, // Montant requis
                 currency: CurrencyCode.MAD, // Devise requise
                 customer_ip: '10.25.28.33', // IP du client requise
-                order_id: '112', // ID de commande requis
+                order_id: clientForm?.OrderId || '', // ID de commande requis
                 success_url: 'https://google.com/', // URL de succès requise
                 error_url: 'https://youtube.com/', // URL d'erreur optionnelle
                 customer: {
                     name: flN(), 
-                    address: '', 
+                    address: clientForm?.Address, 
                     zip_code: '', 
-                    city: '', 
+                    city: clientForm?.City, 
                     state: '', 
-                    country_code: '', 
-                    phone: '', 
-                    email: '', 
+                    country_code: 'MA', 
+                    phone: clientForm?.Tel, 
+                    email: clientForm?.Email, 
                 },
             });
 
@@ -180,20 +187,50 @@ const Checkout :  React.FC = () => {
               }
           }
       }, [tokenId]);
-      const successCallback = (response: any) => {
-          console.log('Payment successful:', response);
-
-          navigate("/Home")
-
+      const successCallback = async (response: any) => {
+          setPaymentResponse(response.response);
+          handlePayment(response.response.transaction_id);
       };
 
       const errorCallback = (response: any) => {
-          // Votre code ici pour gérer l'erreur
           console.error('Payment error:', response);
+          toast.error(t('toastSizeAlert'), {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        });
       };
+
+      const handlePayment = async (trans:string) => {
+        try {
+            setIsLoading(true)
+            const response = await axios.post(`${apiUrl}api/handlepay/`,{
+              shoes_order : shoesOrder,
+              sandals_order : sandalsOrder,
+              client_data : clientForm,
+              transaction_id : trans
+            });
+            await wait(5000)
+            setIsLoading(false)
+            clearCart();
+            navigate('/Trans')
+            console.log(response);
+        } catch (error) {
+            console.error('Error during payment:', error);
+        }
+    };
+
+
     return(<>
       <Header/>
-      <div className="mt-1">
+        {!isLoading?<>
+          <div className="mt-1">
       <div className="checkoutBar shadow rounded d-flex justify-content-between ">
         <button className="btn btn-primary btn-back my-2 mx-1 p-0"
                 style={{width:90}}
@@ -500,7 +537,9 @@ const Checkout :  React.FC = () => {
 
     </div>
     </div>
-    <Footer/>
+    <ToastContainer />
+        </>:<Loading message="Your command is being treating"/>}
+      <Footer/>
     </>)
 
 

@@ -7,6 +7,7 @@ import { Sandal, SandalSize } from "./Sandales";
 import { useNavigate } from "react-router-dom";
 import { useProductsContext } from "../Contexts/ProductsContext";
 import { useTranslation } from "react-i18next";
+import Loading from "./loading";
 
 interface ProductCarouselProps {
   Data : Shoe[];
@@ -43,6 +44,7 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
       } 
     return(
       <>
+        {Data.length==0 && <Loading message="Products are being loaded"/>}
         <Carousel className={`mt-1 productCarousel z-0 ${Data.length===0?'d-none':""}`} 
                 responsive={responsive}
                 swipeable={true}
