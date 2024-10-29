@@ -48,11 +48,12 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
         <Carousel className={`mt-1 productCarousel z-0 ${Data.length===0?'d-none':""}`} 
                 responsive={responsive}
                 swipeable={true}
-                autoPlay={Data.length>1?true:false}
+                autoPlay={Data.length>1}
                 infinite={true}
-                autoPlaySpeed={1500}
-                transitionDuration={100}
-                showDots={true}>
+                autoPlaySpeed={1000}
+                transitionDuration={1000}
+                showDots={true}
+                >
             {Data.map((item, index)=>(
             <div className="productCarouselCard card rounded shadow text-center d-flex flex-column mt-2" key={index}>
             <div className="productCImgCont rounded-4">

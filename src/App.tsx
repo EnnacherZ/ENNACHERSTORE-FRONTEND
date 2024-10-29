@@ -31,7 +31,6 @@ const App : React.FC = () =>{
       <Router>
           <ScrollToTop/>
           <Routes>
-            <Route path="/load" element={<Loading message="loading"/>}/>
             <Route path='productDetail/:productType/:category/:ref' element={<ProductDetail/>}/>
             <Route path="/test" element={<Test/>}/>
             <Route path="/" element={<Navigate to="/Home"/>}/>

@@ -116,6 +116,13 @@
 
 }
 
+.cart-table{
+    border-collapse:collapse;
+}
+.cart-table tbody tr {
+    display: table-row; 
+}
+
 @media (max-width:800px){
 
     .cartBody{
@@ -138,8 +145,7 @@
     .cart-div{
         width: 98%;
         margin-left:1%; 
-        z-index: 1;
-        position: relative;
+        height: auto;
     }
     .cartPriceSM{
         width:calc(100% - 140px);
@@ -171,6 +177,10 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+    }
+    .cart-div{
+        display: flex;
+        flex-direction: column;
     }
 
 }

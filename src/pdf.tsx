@@ -61,6 +61,21 @@ return (
     <div>
         <h1>Créer un PDF avec un Tableau</h1>
         <button onClick={createPdf}>Créer et Télécharger le PDF</button>
+        <table>
+  <thead>
+    <tr>
+      <th>Header 1</th>
+      <th>Header 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Data 1</td>
+      <td>Data 2</td>
+    </tr>
+  </tbody>
+</table>
+
     </div>
 );
 };
