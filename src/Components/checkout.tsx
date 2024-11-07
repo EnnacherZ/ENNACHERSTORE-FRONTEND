@@ -5,7 +5,7 @@ import { clientData, usePayment } from '../Contexts/paymentContext';
 import { useForm } from 'react-hook-form';
 import { GoAlertFill } from "react-icons/go";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { FaCcPaypal, FaCreditCard, FaMoneyBillTransfer, FaPhone } from 'react-icons/fa6';
+import {FaCreditCard, FaMoneyBillTransfer, FaPhone } from 'react-icons/fa6';
 import { BsGeoAltFill } from 'react-icons/bs';
 import { FaCity,FaRegUserCircle, FaUserCircle} from 'react-icons/fa';
 import { MdAlternateEmail} from 'react-icons/md';
@@ -36,12 +36,12 @@ const apiUrl = import.meta.env.VITE_API_URL
 const Checkout :  React.FC = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
-    const {clearCart} = useCart();
+    const {total} = useCart();
     const {currentLang} = useLangContext();
     const {setClientForm, clientForm, setPaymentResponse, shoesOrder, sandalsOrder} = usePayment();
     const [isPhone, setIsPhone]= useState<boolean>()
     const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
-    const [tokenId, setTokenId] = useState<string>();
+    const [tokenId, setTokenId] = useState<string|undefined>(undefined);
     const [selectedCurrency, setSelectedCurrency] = useState<string>('MAD')
     const [isModify, setIsModify] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,7 +55,6 @@ const Checkout :  React.FC = () => {
         handleSubmit,
         formState : {errors, isSubmitting},
         getValues,
-        
   } = Clientform;
 
 
@@ -88,7 +87,7 @@ const Checkout :  React.FC = () => {
      
          //TODO: send data to server
          //... 
-         const paySec = document.getElementById('paymentGatewayTitle')
+         
          if(isClt(clientForm)){
           }
          const clientCoord : clientData = {
@@ -98,13 +97,13 @@ const Checkout :  React.FC = () => {
            Tel : getValues('Tel'),
            City : getValues('City'),
            Address : getValues('Address'),
-           OrderId : uuidv4()
+           OrderId : uuidv4(),
+           Amount : total,
+           Currency : 'MAD'
          }
          setClientForm(clientCoord)
          setIsModify(true)
          await new Promise ((resolve)=>setTimeout(resolve, 1000))
-         if(isPhone){paySec?.scrollIntoView()}
-
        }
 
        useLayoutEffect(()=>{
@@ -131,20 +130,20 @@ const Checkout :  React.FC = () => {
             document.body.removeChild(script);
         };
       }, []);
-      const handleYCPay = async () => {
+      const handleYCPay = async (event:React.MouseEvent<HTMLButtonElement>) => {
+        
         const youCanPayment = new YouCanPay(
             'pri_sandbox_a54c2b28-f8e5-4920-a440-64003',
             true
-        );
-        
-        if(tokenId){return}
+        );    
+        if(tokenId!==undefined){return}
         else{
           try {
             // Obtenir le token
             const token = await youCanPayment.getToken({
                 amount: 500, // Montant requis
                 currency: CurrencyCode.MAD, // Devise requise
-                customer_ip: '10.25.28.33', // IP du client requise
+                customer_ip: '10.25.28.35', // IP du client requise
                 order_id: clientForm?.OrderId || '', // ID de commande requis
                 success_url: 'https://google.com/', // URL de succès requise
                 error_url: 'https://youtube.com/', // URL d'erreur optionnelle
@@ -160,13 +159,15 @@ const Checkout :  React.FC = () => {
                 },
             });
 
-                setTokenId(token.id); // Mettre à jour l'état avec l'ID du token
+                setTokenId(token.id);
+                event.preventDefault();
                 
                 }catch(err){console.log(err)}
         }
       };
 
             useEffect(() => {
+                if(tokenId==undefined){return}
                 if (isScriptLoaded && tokenId) {
                   const ycPay = new YCPay('pub_sandbox_1bfc0387-7aea-49ab-b51e-930e5', {
                     locale: selectedLang(currentLang),
@@ -174,7 +175,7 @@ const Checkout :  React.FC = () => {
                     errorContainer: '#error-container',
                     formContainer: '#payment-container'
                 });
-                // render the payment methods
+                
               ycPay.renderCreditCardForm('default')
               // Ajouter un gestionnaire d'événements pour le bouton de paiement
               const payButton = document.getElementById('pay');
@@ -188,7 +189,17 @@ const Checkout :  React.FC = () => {
           }
       }, [tokenId]);
       const successCallback = async (response: any) => {
-          setPaymentResponse(response.response);
+        setTokenId(undefined)
+          const res = response.response;
+          setPaymentResponse({
+            code : res.code,
+            amount : clientForm?.Amount,
+            currency : clientForm?.Currency,
+            transaction_id : res.transaction_id,
+            message : res.message,
+            success : res.success,
+            order_id :res.order_id
+          });
           handlePayment(response.response.transaction_id);
       };
 
@@ -218,7 +229,7 @@ const Checkout :  React.FC = () => {
             });
             await wait(5000)
             setIsLoading(false)
-            clearCart();
+            // clearCart();
             navigate('/Trans')
             console.log(response);
         } catch (error) {
@@ -517,7 +528,7 @@ const Checkout :  React.FC = () => {
       </button>
     </form>}
 
-    
+    <div className="d-flex flex-column paymentDiv">
     <div className={`paymentGateway ${isClt(clientForm)&&isModify?'':'is-disabled'} card shadow p-2 mt-2 `}
           id="paymentGateway">
       <div className="paymentGatewayTitle fs-3" id="paymentGatewayTitle">
@@ -527,13 +538,19 @@ const Checkout :  React.FC = () => {
       <button className="creditCard rounded my-2" onClick={handleYCPay} >
         <FaCreditCard className="mx-3"/> {t('creditCard')}
       </button>
-      <button className="paypal rounded my-2">
-        <FaCcPaypal className="mx-3" /> PayPal method
-      </button>
       <div id="error-container" ></div>
-      <div id="payment-container" ></div>
-      <button id="pay" className="rounded mt-2">{t('pay')}</button>
+      <div id="payment-container" className="" ></div>
+      <div className="gateway-brand d-flex justify-content-end d-none p-2" >
+          <span className="text-muted"><i>by</i></span>
+          <div className="gateway-brand-img">
+              <img src="https://youcanpay.com/images/ycpay-logo.svg" alt="" />
+          </div>
+      </div>
     </div>
+    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':'is-disabled'}`} >{t('pay')}</button>
+    </div>
+
+    
 
     </div>
     </div>

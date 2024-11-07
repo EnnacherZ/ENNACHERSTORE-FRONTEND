@@ -8,6 +8,8 @@ import axios from "axios";
 import "../Styles/HomePage.css";
 import { TbRosetteDiscount } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
+import { AiFillProduct } from "react-icons/ai";
+import { LiaShoePrintsSolid } from "react-icons/lia";
 
 const HomePage: React.FC = () => {
     const apiUrl = import.meta.env.VITE_API_URL
@@ -47,22 +49,28 @@ const HomePage: React.FC = () => {
         <Header />        
         <Test/>
         <div className="ProductsPromoHome">
-            <div className="HomeTitle fw-bold rounded">
+            <div className="HomeTitle rounded" style={{fontWeight:'bolder'}}>
                 <TbRosetteDiscount className="HomeTitleIcon" />
                     {t('ourPromotions')}
                 <TbRosetteDiscount className="HomeTitleIcon" />
             </div>
-            <div className="ProductsPromoAnnouncement">
+            <div className="ProductsPromoAnnouncement my-1 HomeTitle fw-bold carsl-item-title">
+                <LiaShoePrintsSolid className="mx-2 HomeTitleIconL"/>
+                {t('shoes')}
+                <LiaShoePrintsSolid className="mx-2 HomeTitleIconR"/>
             </div>
             <ProductCarousel Data={productCPromo} DataDetails = {productDetails}/>
         </div>
         <div className="ProductsHome">
-        <div className="HomeTitle fw-bold rounded">
-                <TbRosetteDiscount className="HomeTitleIcon" />
+        <div className="HomeTitle rounded" style={{fontWeight:'bolder'}}>
+                <AiFillProduct  className="HomeTitleIcon" />
                  {t('ourProducts')}
-                <TbRosetteDiscount className="HomeTitleIcon" />
+                <AiFillProduct  className="HomeTitleIcon" />
             </div>
-            <div className="ProductsPromoAnnouncement">
+            <div className="ProductsPromoAnnouncement my-1 HomeTitle fw-bold carsl-item-title">
+                <LiaShoePrintsSolid className="mx-2 HomeTitleIconL"/>
+                    {t('shoes')}
+                <LiaShoePrintsSolid className="mx-2 HomeTitleIconR"/>
             </div>
             <ProductCarousel Data={productCNoPromo} DataDetails = {productDetails}/>
         </div>

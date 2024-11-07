@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-
+import { useDataContext } from './dataContext';
+import { ShoeSize } from '../Components/Shoes';
+import { SandalSize } from '../Components/Sandales';
 
 
 export interface CartItem {
@@ -44,9 +46,16 @@ export interface CartContextType {
   handleMinusQuantity : (item : CartItem) => void;
 }
 
+
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  function quantityFilter(L: ShoeSize[] | SandalSize[], l: number, size : number | string) {
+    let x = L.filter((p) => p.productId === l && p.size ===size).map((p) => p.quantity);
+    return x[0];
+}
+  const {shoesDataDetails} = useDataContext();
   const [cartTotalAmount, setCartTotalAmount] = useState<AllItemsPrice>({
     amountShoes: 0,
     amountSandals: 0,
@@ -231,8 +240,13 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const handlePlusQuantity = (item: CartItem) =>{
     if(item.product==='Shoe'){
+      const quant = quantityFilter(shoesDataDetails, item.id, item.size)
       setShoesItems((prevItems)=>
-        prevItems.map((it)=>it.id===item.id&&it.size===item.size?{...it, quantity: it.quantity+1}:it))
+        prevItems.map((it)=>it.id===item.id&&it.size===item.size?
+          (quant>it.quantity?
+          {...it, quantity: it.quantity+1}:
+          it)
+          :it))
     }
     if(item.product==='Sandal'){
       setSandalsItems((prevItems)=>

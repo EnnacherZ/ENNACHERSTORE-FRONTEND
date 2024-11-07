@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState } from 'react';
+import React, {useEffect, useLayoutEffect, useState } from 'react';
 import { CartItem, useCart } from '../Contexts/cartContext.tsx';
 import {ToastContainer, Zoom, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
@@ -13,9 +13,9 @@ import { TbCreditCardPay } from 'react-icons/tb';
 import ReactCountryFlag from 'react-country-flag';
 import Footer from './footer.tsx';
 import { useTranslation } from 'react-i18next';
-import { selectedLang, useLangContext } from "../Contexts/languageContext.tsx"
+import { selectedLang, useLangContext } from "../Contexts/languageContext.tsx";
+import axios from 'axios';
 const apiUrl = import.meta.env.VITE_API_URL;
-
 
 
 const undefinedItem : CartItem ={
@@ -30,20 +30,42 @@ const undefinedItem : CartItem ={
   quantity:0,
   size:0
 }
+
+
 const Cart: React.FC = () => {
   const navigate = useNavigate();
   const {t} = useTranslation();
   const {total} = useCart();
   const {currentLang} = useLangContext();
   const [isPhoneScreen, setIsPhoneScreen] = useState<boolean>(false);
-
   const { shoesItems, removeItem, clearCart, handleMinusQuantity, handlePlusQuantity } = useCart();
-
   const [isRemoveConfirm, setIsRemoveConfirm] = useState<boolean>(false);
   const [deletedItem, setDeletedItem] = useState<CartItem>(undefinedItem);
   const [deleteCible, setDeleteCible] = useState<string>("");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>('MAD');
+  const [ratesList, setRatesList] = useState<{[key: string]: number}>({'MAD' : 1})
+  const [rate, setRate] = useState<number>(1);
 
+  useEffect(()=> {
+    const CurrencyConverter = async () => {
+      const apiKey = import.meta.env.VITE_CURRENCY_API;
+        try {
+          const response = await axios.get(
+            `https://v6.exchangerate-api.com/v6/${apiKey}/latest/MAD`
+          );
+          const conversionRate = response.data.conversion_rates;
+          console.log(response)
+          setRatesList(conversionRate);
+        } catch (error) {
+          console.error('Erreur lors de la récupération des taux:', error);
+        }
+    };
+    CurrencyConverter();
+  }, [])
 
+  useEffect(()=>{
+      setRate(ratesList[selectedCurrency])
+  },[selectedCurrency])
 
   useLayoutEffect(()=>{
     const phoneScreen = ()=>{
@@ -107,24 +129,23 @@ const Cart: React.FC = () => {
     });
   };
 
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('MAD');
   const currencyRender = (l: string) => {
     let a = '';
     switch (l) {
       case 'MAD':
         a = 'MA';
         break;
-      case 'EUR €':
+      case 'EUR':
         a = 'EU';
         break;
-      case 'USD $':
+      case 'USD':
         a = 'US';
         break;
     }
     return a;
   }
-  
 
+  
   return(
     <>
     <Header/>
@@ -139,8 +160,8 @@ const Cart: React.FC = () => {
               onChange={(e)=>setSelectedCurrency(e.target.value)}
               >
           <option defaultValue={'MAD'} style={{fontWeight:500}}>MAD</option>
-          <option style={{fontWeight:500}}>USD $</option>
-          <option style={{fontWeight:500}}>EUR €</option>
+          <option style={{fontWeight:500}} value={'USD'}>USD $</option>
+          <option style={{fontWeight:500}} value={'EUR'}>EUR €</option>
       </select>
       <ReactCountryFlag
                   className="checkFlag"
@@ -155,7 +176,9 @@ const Cart: React.FC = () => {
               />
   </div> 
   <div className="d-flex align-items-center me-1"> 
-      <strong style={{fontSize:13}}> TOTAL : 100000 {t(`${(selectedCurrency).toLowerCase()}`)}</strong>
+      <strong style={{fontSize:13}}> 
+        {t('total')} : <span style={{color:'green'}}> {(total*rate).toFixed(2)}</span> 
+      </strong>
   </div>
 
 </div>
@@ -227,7 +250,7 @@ const Cart: React.FC = () => {
 </div>
 
 
-<div className="cart-div card shadow " >
+<div className={`cart-div card shadow ${isPhoneScreen?"mt-3":""}`} >
   <div  className='text-center card cardEX' >
     <div className='text-center my-2 fs-3'><b><FaShoppingCart style={{marginTop:-3, }}/> {t('YourCart')}</b></div>
     {shoesItems.length === 0 ? (
@@ -265,7 +288,9 @@ const Cart: React.FC = () => {
             <tbody>
               {shoesItems.map((item, index) => (
                 <tr key={index} style={{ cursor: 'pointer', height: 120, }} className=''>
-                  <td style={{fontSize:12, width:300}} className='p-0'>
+                  <td style={{fontSize:12, width:300}} 
+                      className='p-0'
+                      >
                       <div className='imgCart py-2 pe-2'>
                         <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
                       </div>  
@@ -308,7 +333,8 @@ const Cart: React.FC = () => {
                       />
                       <button className="btn rounded-0 btn-outline-success btn-sm  "
                               style={{height:30, width:25}}
-                              onClick={()=>handlePlusQuantity(item)}>+</button>
+                              onClick={()=>handlePlusQuantity(item)}
+                              >+</button>
                     </div>
                     <button className="btnCart btn btn-light align-middle  border-red mt-3  p-2" 
                             style={{ outline: 0, fontSize:15, width:35,}} 
@@ -333,7 +359,7 @@ const Cart: React.FC = () => {
           </>)}
           {isPhoneScreen && (<>
           {shoesItems.map((item, index)=>(
-            <div  style={{fontSize:13, width:"100%", height:130}} className='py-1' key={index}>
+            <div  style={{fontSize:13, width:"100%", height:130}} className='py-1 ' key={index}>
             <div className='imgCart py-2 pe-2'>
               <img src={`${apiUrl}${item.image}`} className='imgCartImg rounded' />
             </div>

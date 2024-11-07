@@ -14,6 +14,10 @@ i18n
           sandals : 'Sandals',
           shirts : 'Shirts',
           pants :'Pants',
+          Shoes : "Shoes",
+          Sandals : 'Sandals',
+          Shirts : 'Shirts',
+          Pants :'Pants',
           YourCart : 'Your cart',
           ourPromotions : 'Our promotions',
           ourProducts : 'Our products',
@@ -67,7 +71,19 @@ i18n
           modify:'Modify',
           pay:'Pay',
           loading : 'Loading . . .',
-
+          yourOrder : 'Your order',
+          transactionInfos : 'Transaction infos',
+          code : 'Code',
+          currency : 'Currency',
+          amount : 'Amount',
+          orderId : 'Order ID',
+          transactionId : 'Transaction ID',
+          successMsg : 'Your transaction is successfully completed',
+          downloadTicket : 'Download e-command ticket',
+          readMore : 'Read more',
+          readLess : 'Read less',
+          quantity : 'Quantity',
+          thank : 'Thank you for your confidence !',
 
           
         },
@@ -80,6 +96,10 @@ i18n
           sandals : 'Sandales',
           shirts : 'Shirts',
           pants :'Pants',
+          Shoes : "Chaussures",
+          Sandals : 'Sandales',
+          Shirts : 'Shirts',
+          Pants :'Pants',
           YourCart : 'Votre panier',
           ourPromotions : 'Nos promotions',
           ourProducts : 'Nos produits',
@@ -133,6 +153,20 @@ i18n
           modify:'Modifier',
           pay : 'Payer',
           loading : 'Chargement . . .',
+          yourOrder : 'Votre commande',
+          transactionInfos : 'Infos de transaction',
+          code : 'code',
+          currency : 'Devise',
+          amount : 'Montant',
+          orderId : 'ID commande',
+          transactionId : 'ID transaction',
+          successMsg : 'Votre transaction est effectuée avec succès',
+          downloadTicket : 'Télécharger le ticket de l\'e-commande',
+          readMore : 'Lire plus',
+          readLess : 'Lire moins',
+          quantity : 'Quantité',
+          thank : 'Merci pour votre confiance !'
+
         },
       },
       ar: {
@@ -143,6 +177,10 @@ i18n
           sandals : 'صنادل',
           shirts : 'اقمصة',
           pants :'سراويل',
+          Shoes : "الاحذية",
+          Sandals : 'صنادل',
+          Shirts : 'اقمصة',
+          Pants :'سراويل',
           YourCart : 'السلة',
           ourPromotions : 'عروض التخفيضات',
           ourProducts : 'منتوجاتنا',
@@ -196,6 +234,19 @@ i18n
           modify:'تعديل',
           pay : 'دفع',
           loading : '. . . جاري التحميل ',
+          yourOrder : 'طلبيتكم',
+          transactionInfos : 'معلومات التحويل',
+          code : 'الرمز',
+          currency : 'العملة',
+          amount : 'المبلغ',
+          orderId : 'معرف الطلبية',
+          transactionId : 'معرف التحويل',
+          successMsg : 'اكتملت معاملتك بنجاح',
+          downloadTicket : 'تنزيل تذكرة الطلبية',
+          readMore : 'رؤية الكل',
+          readLess : 'رؤية اقل',
+          quantity : 'الكمية',
+          thank : '!شكرا على ثقتكم',
 
         },
       },
@@ -227,7 +278,7 @@ i18n
 }
   const langContext = createContext<langContextProps | undefined>(undefined);
   export const LangContextProvider : React.FC<{children:ReactNode}> = ({children}) =>{
-    const [currentLang, setCurrentLang] = useState<string>("Français");
+    const [currentLang, setCurrentLang] = useState<string>("العربية");
     useEffect(()=>{
         i18n.changeLanguage(selectedLang(currentLang));
     },[currentLang])

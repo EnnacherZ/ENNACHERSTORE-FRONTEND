@@ -1,7 +1,7 @@
 import React, {useState, useEffect, createContext, useContext, ReactNode, Dispatch} from "react";
 import { ShoeSize } from "../Components/Shoes";
 import { SandalSize } from "../Components/Sandales";
-import { useCart } from "./cartContext";
+import { AllItems, useCart } from "./cartContext"; 
 
 export interface clientData{
     FirstName : string;
@@ -11,18 +11,18 @@ export interface clientData{
     City: string;
     Address : string;
     OrderId : string;
+    Amount : number;
+    Currency : string;
 }
 export interface PaymentResponse {
-    code: string;                 
-    is_success: boolean;         
+    code: string;                        
     message: string;             
     order_id: string;             
     success: boolean;            
-    transaction_id: string;       
+    transaction_id: string;  
+    amount : number | undefined;
+    currency : string | undefined
 }
-
-
-
 export interface paymentContextProps { 
     clientForm : clientData | undefined;
     setClientForm : (data:clientData) => void;
@@ -30,6 +30,7 @@ export interface paymentContextProps {
     setPaymentResponse : Dispatch<React.SetStateAction<PaymentResponse | undefined>>;
     shoesOrder : ShoeSize[];
     sandalsOrder : SandalSize[];
+    transAllItems : AllItems| undefined;
     
     
 }
@@ -37,10 +38,21 @@ export interface paymentContextProps {
 const paymentContext = createContext<paymentContextProps|undefined>(undefined)
 
 export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
-    const {shoesItems, sandalsItems} = useCart();
+    const {shoesItems, sandalsItems, allItems } = useCart();
     const [shoesOrder, setShoesOrder] = useState<ShoeSize[]>([]);
     const [sandalsOrder, setSandalsOrder] = useState<SandalSize[]>([])
-    const [paymentResponse, setPaymentResponse] = useState<PaymentResponse>();
+    const [transAllItems, setTransAllItems] = useState<AllItems|undefined>()
+    const [paymentResponse, setPaymentResponse] = useState<PaymentResponse | undefined>(
+        {
+            code: "string;",                        
+    message: "string",             
+    order_id: "gttrtzerufuoerigfihrgfrgrtttyyjyujuyr",          
+    success: true,            
+    transaction_id: "kfvighvgopbhrôbj^rbpujb^àtotjôtjà^tt", 
+    amount : 43753745345,
+    currency : "string | undefined"
+}
+    );
     const [clientForm, setClientForm] = useState<clientData | undefined>(() => {
         try {
             const savedClientData = sessionStorage.getItem("ClientData");
@@ -48,9 +60,8 @@ export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
                 return undefined;
             }
             return JSON.parse(savedClientData);
-        } catch(err){
-            console.log(err)
-            return undefined; // Retourne undefined en cas d'erreur
+        } catch{
+            return undefined; 
         }
     });
 
@@ -80,14 +91,21 @@ export const PaymentProvider : React.FC<{children:ReactNode}> =({children}) => {
                         quantity : p.quantity
             })
         }
+
         setSandalsOrder(order)
     },[sandalsItems])
+
+    useEffect(()=>{
+        setTransAllItems(allItems);
+    },[allItems])
+;
 
 
 
 
     return(
-        <paymentContext.Provider value={{clientForm, 
+        <paymentContext.Provider value={{clientForm,
+                                        transAllItems, 
                                         setClientForm,
                                         paymentResponse,
                                         setPaymentResponse,

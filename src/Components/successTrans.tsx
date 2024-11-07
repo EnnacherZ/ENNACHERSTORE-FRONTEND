@@ -1,41 +1,161 @@
-import React from "react";
+import React, {useState } from "react";
 import { usePayment } from "../Contexts/paymentContext";
 import icon from "../assets/iconlogblue.png";
 import "../Styles/successTrans.css";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { GrTransaction } from "react-icons/gr";
+import { GiTicket } from "react-icons/gi";
+import createPdf from "../pdf";
+import Footer from "./footer";
+import { AllItems } from "../Contexts/cartContext";
+import { BsBagCheckFill } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
+import { useLangContext } from "../Contexts/languageContext";
+import { selectedLang } from "../Contexts/languageContext";
+const SuccessTrans: React.FC = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const {currentLang} = useLangContext();
+  const { transAllItems, paymentResponse } = usePayment();
+  const {t} = useTranslation();
+  const [isExpanded, setIsExpanded] = useState(false); // État pour gérer l'extension
 
-const SuccessTrans :React.FC = () => {
-    const navigate = useNavigate();
-    const {paymentResponse} = usePayment();
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
 
+  const allItemsKeys = Object.keys(transAllItems|| [])
 
+  return (
+    <>
+    <Link to='/Home'>
+      <div className="transHeader d-flex justify-content-center">
+        <div className="transIconDiv mt-3" >
+          <img src={icon} alt="" />
+        </div>
+      </div>
+    </Link>
+      
 
-    console.log(paymentResponse)
-    return(<>
-        <div className="transHeader d-flex justify-content-center">
-            <div className="transIconDiv mt-3" onClick={()=>navigate('/Home')}>
-                <img src={icon} alt="" />
+      <div className="transSuccMsg mt-3">
+        {t('successMsg')}
+      </div>
+      <div className="transSuccMsg mt-1">
+        {t('thank')}
+      </div>
+
+      <div className="d-flex justify-content-center my-4">
+        <FontAwesomeIcon
+          icon={faCircleCheck}
+          size="2xl"
+          className="succIcon"
+          beat
+          style={{ color: "#38d400" }}
+        />
+      </div>
+
+      <div className="trans-ticket d-flex justify-content-center">
+        <button className="ticket-generator btn btn-warning fw-bold" onClick={createPdf}>
+          <GiTicket size={25} /> {t('downloadTicket')}
+        </button>
+      </div>
+
+      <div className="d-flex trans-resume-body">
+        {/* Transaction Info */}
+        <div className={`transDetailsTable card shadow mt-3 ${selectedLang(currentLang)=='ar'&& 'rtl'}`}>
+          <div className="fw-bold text-center fs-3 my-1">
+            <GrTransaction size={25} className="mx-1" /> {t('transactionInfos')}
+          </div>
+          <hr className="my-2" />
+          <ul className="px-1">
+            <li className="d-flex justify-content-between align-items-center px-1 my-2 " key={0}>
+              <span className="fw-bold text-muted">{t('code')} :</span>
+              <span className="fw-bold" style={{ color: "#0e92e4" }}>
+                {paymentResponse?.code}
+              </span>
+            </li>
+            <li className="d-flex justify-content-between align-items-center px-1  my-2" key={1}>
+              <span className="fw-bold text-muted">{t('currency')} :</span>
+              <span className="fw-bold" style={{ color: "#0e92e4" }}>
+                {paymentResponse?.currency}
+              </span>
+            </li>
+            <li className="d-flex justify-content-between align-items-center px-1  my-2" key={2}>
+              <span className="fw-bold text-muted">{t('amount')} :</span>
+              <span className="fw-bold" style={{ color: "#0e92e4" }}>
+                {paymentResponse?.amount}
+              </span>
+            </li>
+            <li className="d-flex justify-content-between align-items-center px-1  my-2" key={3}>
+              <span className="fw-bold text-muted">{t('orderId')} :</span>
+              <span className="fw-bold" style={{ color: "#0e92e4" }}>
+                {paymentResponse?.order_id}
+              </span>
+            </li>
+            <li className="d-flex justify-content-between align-items-center px-1  my-2" key={4}>
+              <span className="fw-bold text-muted">{t('transactionId')} :</span>
+              <span className="fw-bold" style={{ color: "#0e92e4" }}>
+                {paymentResponse?.transaction_id}
+              </span>
+            </li>
+          </ul>
+          <div className="trans-ticket d-flex justify-content-center mb-1">
+            <button className="ticket-generator btn btn-warning fw-bold" onClick={createPdf}>
+                <GiTicket size={25} /> {t('downloadTicket')}
+            </button>
+      </div>
+        </div>
+
+        <div className={`trans-command-resume mt-3 card shadow ${selectedLang(currentLang)=='ar'&& 'rtl'}`} >
+          <div className="fw-bold text-center fs-3 p-1" style={{ backgroundColor: "white", height: 56 }}>
+            <BsBagCheckFill size={25} className="mx-2" /> {t('yourOrder')}
+          </div>
+          <hr className="m-0" />
+          {allItemsKeys.map((key, index)=>{
+            let x = key as keyof AllItems;
+            return(<>
+            <div  className={`trans-items-productType fw-bold text-start px-2 fs-3 mt-1 
+                  ${(transAllItems?.[x].length==0)&&'d-none'}
+                  ${selectedLang(currentLang)=='ar'&& 'text-end'}`} 
+                  key={(index*2)+1}>
+              {t(key)}:
             </div>
+            
+            {transAllItems?.[x].slice(0, isExpanded ? transAllItems?.[x].length : 3).map((it) => (
+            <div className="trans-item-info d-flex flex-row justify-content-between my-2 mx-1" key={it.id + 25}>
+              <div className="trans-item-img m-1 card p-1 rounded">
+                <img src={`${apiUrl}${it.image}`} className="rounded" alt="" />
+              </div>
+              <div className="trans-item-name flex-column d-flex align-items-center justify-content-around">
+                <div className="fw-bold">{it.category} {it.ref}</div>
+                <div className="fw-bold">{it.name}</div>
+                <div className="text-muted">{t('size')}: {it.size}</div>
+              </div>
+              <div className="trans-item-pr d-flex flex-column justify-content-around align-items-center mx-1">
+                <div className="fw-bold" style={{ color: "green" }}>
+                  {(it.price * (1 - it.promo * 0.01)*it.quantity).toFixed(2)} {t('mad')}
+                </div>
+                <div className="text-muted">{t('quantity')}: {it.quantity}</div>
+              </div>
+            </div>
+          ))}
+          {transAllItems?.[x]?.length? transAllItems[x].length> 3 && (
+          <div className="text-center my-3">
+            <button className="btn btn-outline-primary border border-2 border-primary fw-bold" onClick={toggleExpand}>
+              {isExpanded ? t('readLess') : t('readMore')}
+            </button>
+          </div>
+        ):<></>}
+            </>)
+          })
+          }
         </div>
-        <div className="transSuccMsg mt-3">
-            Votre opération est effectué avec succés 👍
-        </div>
-        <div className="transDetailsTable mt-4">
-            <table className="table table-hover table-bordred " style={{margin:'auto'}}>
-                <thead>
-                    <tr className="text-center">
-                        <th className="text-muted">Transaction id</th>
-                        <th className="text-muted">Order id</th>
-                        <th className="text-muted">Code</th>
-                    </tr>
-                </thead>
-                <tbody><tr className="text-center">
-                    <td>{paymentResponse?.transaction_id}</td>
-                    <td>{paymentResponse?.order_id}</td>
-                    <td>{paymentResponse?.code}</td>
-                </tr></tbody>
-            </table>
-        </div>
-    </>)
+      </div>
+
+      <Footer />
+    </>
+  );
 };
+
 export default SuccessTrans;

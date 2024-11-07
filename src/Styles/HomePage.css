@@ -5,8 +5,46 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0.8% 0;
+    margin: 10px 0;
 }
 .HomeTitleIcon{
     margin:0 15px;
+    position: relative;
+}
+.HomeTitleIconL{
+    margin:0 15px;
+    position: relative;
+    animation: setL 3s infinite;
+}
+.HomeTitleIconR{
+    margin:0 15px;
+    position: relative;
+    animation: setR 3s infinite;
+}
+.carsl-item-title{
+    background-color: black;
+    color: white;
+}
+
+@keyframes setR{
+    0%{
+        left: 0%;
+    }
+    50%{
+        left: 50px;
+    }
+    100%{
+        left:0%
+    }
+}
+@keyframes setL{
+    0%{
+        left: 0%;
+    }
+    50%{
+        left: -50px;
+    }
+    100%{
+        left:0%
+    }
 }

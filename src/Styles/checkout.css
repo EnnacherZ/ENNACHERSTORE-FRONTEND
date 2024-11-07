@@ -27,12 +27,15 @@
 }
 .btn-back{
     width: 22%;
-    font-size: 15px;
+    font-size: 12px;
+}
+.paymentDiv{
+    width:50%
 }
 .paymentGateway{
-    width:50%;
+    width:100%;
 }
-.paymentGateway.is-disabled{
+.paymentGateway.is-disabled, .pay-button.is-disabled{
     opacity: .5;
     pointer-events: none;
 }
@@ -80,6 +83,24 @@
     color:#0d6efd;
     background-color: white;
 }
+.gateway-brand{
+    height: 40px;
+}
+.gateway-brand span{
+    font-family: Mona-sans, sans-serif;
+    text-decoration-style: dashed;
+    font-size: 12px;
+    margin-right: 5px;
+}
+.gateway-brand-img{
+    width: 60px;
+    height: 35px;
+}
+.gateway-brand-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
 
 @media (max-width:800px){
     .clientFormAndPayment{
@@ -101,5 +122,13 @@
     }
     .alert{
         font-size: 3.1vw;
+    }
+    .paymentDiv{
+        width: 98%;
+        margin-left:1%;
+    }
+    #pay{
+        width: 90%;
+        margin-left:5%;
     }
 }

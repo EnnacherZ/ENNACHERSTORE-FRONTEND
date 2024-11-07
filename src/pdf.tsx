@@ -1,11 +1,18 @@
-import React from 'react';
 import { PDFDocument, rgb } from 'pdf-lib';
-
-const PdfGenerator: React.FC = () => {
   const createPdf = async () => {
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([600, 400]);
+    const page = pdfDoc.addPage([600, 800]);
+    const logo = 'https://cdn.dribbble.com/userupload/2614322/file/original-6e1d4c449d23482f1b43163c29ca96be.png?resize=752x'
+    const imgBytes = await fetch(logo).then(res=>res.arrayBuffer())
+    const imglogo = await pdfDoc.embedPng(imgBytes)
+    const { width, height } = imglogo.size();
+    page.drawImage(imglogo,{
+        x: 590,
+        y: 790,
+        width,
+        height,
 
+    })
     // Définir les données du tableau
     const data = [
         ['Nom', 'Âge', 'Ville'],
@@ -31,7 +38,7 @@ const PdfGenerator: React.FC = () => {
                 y,
                 width: cellWidth,
                 height: cellHeight,
-                color: rgb(0.9, 0.9, 0.9),
+                color: rgb(0.5, 0.9, 0.75),
             });
 
             // Dessiner le texte de la cellule
@@ -57,26 +64,5 @@ const PdfGenerator: React.FC = () => {
     URL.revokeObjectURL(url);
 };
 
-return (
-    <div>
-        <h1>Créer un PDF avec un Tableau</h1>
-        <button onClick={createPdf}>Créer et Télécharger le PDF</button>
-        <table>
-  <thead>
-    <tr>
-      <th>Header 1</th>
-      <th>Header 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Data 1</td>
-      <td>Data 2</td>
-    </tr>
-  </tbody>
-</table>
+export default createPdf
 
-    </div>
-);
-};
-export default PdfGenerator;

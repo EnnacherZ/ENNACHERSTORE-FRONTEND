@@ -35,7 +35,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
     const [clickedButton, setClickedButton] = useState<{ [key: number]: number | null }>({});
     const [selectedShoeDetails, setSelectedShoeDetails] = useState<{ [key: number]: { size: number; quantity: number | null } }>({});
     const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 20;
+    const itemsPerPage = import.meta.env.VITE_PAGINATION;
 
     const handleSizeClick = (shoeId: number, size: number, quantity: number) => {
         setClickedButton((prevClickedButton) => ({
@@ -116,6 +116,8 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
 
     const displayedProducts = products.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     const pageCount = Math.ceil(products.length / itemsPerPage);
+
+
     return (
         <>
             <div className="productsDiv mt-3">
@@ -188,7 +190,7 @@ const Products: React.FC<productsShow> = ({ pData, pDataDetails, productShowed, 
                         
                     </div>
                 )}
-                {products.length === 0 && (
+                {pData.length === 0 && (
                     <>
                         <Loading message="Products loading . . ."/>
                     </>

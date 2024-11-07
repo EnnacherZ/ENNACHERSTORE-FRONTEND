@@ -11,4 +11,6 @@ declare class YCPay {
 
     renderCreditCardForm(theme?: string): void;
     pay(token: string): Promise<any>;
+    renderAvailableGateways(list? : Array, theme?: string )
 }
+

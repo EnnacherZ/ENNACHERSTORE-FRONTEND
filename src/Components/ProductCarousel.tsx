@@ -42,10 +42,11 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
         navigate(`/productDetail/${pro.productType}/${pro.category}/${pro.ref}/`)
   
       } 
+
     return(
-      <>
+      <><hr className="my-1"/>
         {Data.length==0 && <Loading message="Products are being loaded"/>}
-        <Carousel className={`mt-1 productCarousel z-0 ${Data.length===0?'d-none':""}`} 
+        <Carousel className={`mt-1 productCarousel z-0 `} 
                 responsive={responsive}
                 swipeable={true}
                 autoPlay={Data.length>1}
@@ -59,18 +60,18 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
             <div className="productCImgCont rounded-4">
               <img src={`${apiUrl}${item.image}`} className="rounded-top" alt="" />
             </div>
-            <div className="productCInfos1 my-2 fw-bold" >
+            <div className="productCInfos1 my-1 fw-bold" >
               {(item.category).toLowerCase()} {(item.ref).toLowerCase()}
             </div>
-            <div className="productCInfos2 my-2 fw-bold">
+            <div className="productCInfos2 my-1 fw-bold">
                 {(item.name).toLowerCase()}
             </div>
-            <div className="productCPrice my-2">
-              <div className="productCPriceP my-2">{(item.price*(1-item.promo*0.01)).toFixed(2)} MAD</div>
-              <div className={`productCPriceD my-2 ${item.promo==0?'d-none':''}`}>{item.price} MAD</div>
-              <div className={`productCDiscount my-2 ${item.promo==0?'d-none':''}`}> {item.promo}% off</div>
+            <div className="productCPrice my-1">
+              <div className="productCPriceP my-1">{(item.price*(1-item.promo*0.01)).toFixed(2)} MAD</div>
+              <div className={`productCPriceD my-1 ${item.promo==0?'d-none':''}`}>{item.price} MAD</div>
+              <div className={`productCDiscount my-1 ${item.promo==0?'d-none':''}`}> {item.promo}% off</div>
             </div>
-            <button className="btn btn-dark rounded productCView mb-0"
+            <button className="btn btn-dark fw-bold productCView mb-0"
                     onClick={()=>getProductDetail(item, DataDetails)}>
               {t('viewProduct')} 
             </button>
@@ -79,6 +80,7 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
             ))}
 
         </Carousel>
+        <hr className="my-1"/>
       </>
 
     )

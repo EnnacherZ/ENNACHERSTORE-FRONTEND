@@ -129,26 +129,33 @@
 .pagination .previous a {
     text-decoration: none;
     border: 2px solid #000;
-    color: white;
-    background-color: #000 ;
+    color: black;
+    background-color: white ;
     font-size: 18px;
     margin:0% 5px;
     padding: 2px 8px;
     text-align: center;
 }
+.pagination{
+    display: flex;
+    flex-wrap: wrap;
+
+    height: 80px;
+}
+
 .pagination .next a{
     text-decoration: none;
     border: 2px solid #000;
-    color: white;
-    background-color:#000 ;
+    color: black;
+    background-color: white ;
     font-size: 18px;
-    margin:0% 8px;
+    margin:4px 8px;
     padding: 5px 8px;
     text-align: center;
 }
 .pagination li a[tabindex="0"], .pagination li a[tabindex="-1"]{
     border: 2px solid #000;
-    margin: 0% 4px;
+    margin: 4px 4px;
     padding:3px 8px;
     font-size: 18px;
     transition: 0.4s ease;
