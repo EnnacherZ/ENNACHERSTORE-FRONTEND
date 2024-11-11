@@ -141,7 +141,7 @@ const Checkout :  React.FC = () => {
           try {
             // Obtenir le token
             const token = await youCanPayment.getToken({
-                amount: 500, // Montant requis
+                amount: 5000, // Montant requis
                 currency: CurrencyCode.MAD, // Devise requise
                 customer_ip: '10.25.28.35', // IP du client requise
                 order_id: clientForm?.OrderId || '', // ID de commande requis
