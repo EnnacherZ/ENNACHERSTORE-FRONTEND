@@ -529,7 +529,7 @@ const Checkout :  React.FC = () => {
     </form>}
 
     <div className="d-flex flex-column paymentDiv">
-    <div className={`paymentGateway ${isClt(clientForm)&&isModify?'':'is-disabled'} card shadow p-2 mt-2 `}
+    <div className={`paymentGateway ${isClt(clientForm)&&isModify?'':''} card shadow p-2 mt-2 `}
           id="paymentGateway">
       <div className="paymentGatewayTitle fs-3" id="paymentGatewayTitle">
         <FaMoneyBillTransfer className="mx-3"/> {t('paymentPortal')}
@@ -547,7 +547,7 @@ const Checkout :  React.FC = () => {
           </div>
       </div>
     </div>
-    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':'is-disabled'}`} >{t('pay')}</button>
+    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':''}`} >{t('pay')}</button>
     </div>
 
     
