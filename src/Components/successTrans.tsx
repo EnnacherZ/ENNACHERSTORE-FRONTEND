@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, {useEffect, useState } from "react";
 import { usePayment } from "../Contexts/paymentContext";
 import icon from "../assets/iconlogblue.png";
 import "../Styles/successTrans.css";
@@ -17,9 +17,16 @@ import { selectedLang } from "../Contexts/languageContext";
 const SuccessTrans: React.FC = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const {currentLang} = useLangContext();
-  const { transAllItems, paymentResponse } = usePayment();
+  const { transAllItems, paymentResponse, invoiceUrl, clientForm } = usePayment();
   const {t} = useTranslation();
+  const [fileName, setFileName] = useState<string>(clientForm?.FirstName+"_"+clientForm?.LastName)
   const [isExpanded, setIsExpanded] = useState(false); // État pour gérer l'extension
+
+  useEffect(()=>{
+    if(clientForm){
+      setFileName(clientForm?.FirstName+"_"+clientForm?.LastName)
+    }
+  }, [clientForm])
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -51,14 +58,16 @@ const SuccessTrans: React.FC = () => {
           size="2xl"
           className="succIcon"
           beat
-          style={{ color: "#38d400" }}
+          style={{ color:"#38d400"}}
         />
       </div>
 
       <div className="trans-ticket d-flex justify-content-center">
-        <button className="ticket-generator btn btn-warning fw-bold" onClick={createPdf}>
+        <a href={invoiceUrl || ''} download={fileName}>
+        <button className="ticket-generator btn btn-warning fw-bold" >
           <GiTicket size={25} /> {t('downloadTicket')}
         </button>
+        </a>
       </div>
 
       <div className="d-flex trans-resume-body">
@@ -118,12 +127,12 @@ const SuccessTrans: React.FC = () => {
             <div  className={`trans-items-productType fw-bold text-start px-2 fs-3 mt-1 
                   ${(transAllItems?.[x].length==0)&&'d-none'}
                   ${selectedLang(currentLang)=='ar'&& 'text-end'}`} 
-                  key={(index*2)+1}>
+                  key={(index*2)}>
               {t(key)}:
             </div>
             
             {transAllItems?.[x].slice(0, isExpanded ? transAllItems?.[x].length : 3).map((it) => (
-            <div className="trans-item-info d-flex flex-row justify-content-between my-2 mx-1" key={it.id + 25}>
+            <div className="trans-item-info d-flex flex-row justify-content-between my-2 mx-1" key={it.id}>
               <div className="trans-item-img m-1 card p-1 rounded">
                 <img src={`${apiUrl}${it.image}`} className="rounded" alt="" />
               </div>

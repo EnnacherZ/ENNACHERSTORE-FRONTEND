@@ -79,28 +79,34 @@ const Header: React.FC = () => {
                 style={{borderBottomColor:"#7baccb"}}
                 >
         {isPhone?(<>
-            <div className="navbar">
+            
+            <div className="navbar p-0">
             <div className="icon-section">
                 <a onClick={() => navigate("/Home")}>
                     <img className="icon1" src={icon1} alt="Icon" />
                 </a>
             </div>
             <div className="sideBarIcon " onClick={()=>setSidebar(!sidebar)}>
-                <div    className={sidebar?`sideBarIconLine1 active`:"sideBarIconLine1"}
+                <div className="d-flex flex-column justify-content-evenly align-items-center" style={{height:60}}>
+                                    <div    className={sidebar?`sideBarIconLine1 active`:"sideBarIconLine1"}
                         onClick={()=>setSidebar(!sidebar)}></div>
                 <div    className={sidebar?`sideBarIconLine2 active`:"sideBarIconLine2"}
                         onClick={()=>setSidebar(!sidebar)}></div>
                 <div    className={sidebar?`sideBarIconLine3 active`:"sideBarIconLine3"}
                         onClick={()=>setSidebar(!sidebar)}></div>
+                </div>
+                <div className="fs-6 fw-bold text-center">{t('menu')}</div>
             </div>
             <div className="SmallCart d-flex" onClick={()=>navigate("/YourCart")}>
                 <FaShoppingCart className="SmallCartIcon" />
                 <span className="rounded" style={{backgroundColor:'#0e92e4', color:"white", direction:'rtl'}}>
                 {itemCount}</span>
             </div>
-            <nav className={sidebar?"nav-menu active":"nav-menu"}>
+            <div className={`d-flex ${sidebar?"sideBarReducer-active":"sideBarReducer"}`} 
+                >
+                   <nav className={sidebar?"nav-menu active":"nav-menu"}>
                 <ul className="nav-menu-items p-0">
-                    <li className="text-nav text-nav-li langSelectorPhone justify-content-around">
+                    <li className="text-nav text-nav-li langSelectorPhone justify-content-around" style={{zIndex:11000}}>
                     <MdLanguage size={30}/>
                         <select className=""
                                 onChange={(e)=>setCurrentLang(e.target.value)}
@@ -142,6 +148,9 @@ const Header: React.FC = () => {
 
                 </ul>
             </nav>
+            <div className="voidSectionSideBarReducer" onClick={()=>setSidebar(false)}></div>
+            </div>
+         
             </div>
 
         </>):(<>

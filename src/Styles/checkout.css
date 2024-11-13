@@ -25,6 +25,9 @@
 .ClientInfosDivSM{
     display: none;
 }
+.ClientInfosDivSM div input{
+    height: 45px;
+}
 .btn-back{
     width: 22%;
     font-size: 12px;
@@ -102,6 +105,7 @@
     object-fit: fill;
 }
 
+
 @media (max-width:800px){
     .clientFormAndPayment{
         flex-direction: column;
@@ -130,5 +134,8 @@
     #pay{
         width: 90%;
         margin-left:5%;
+    }
+    form span label{
+        direction: rtl;
     }
 }

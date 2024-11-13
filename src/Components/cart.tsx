@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useState } from 'react';
+import React, {useLayoutEffect, useState } from 'react';
 import { CartItem, useCart } from '../Contexts/cartContext.tsx';
 import {ToastContainer, Zoom, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
@@ -14,7 +14,7 @@ import ReactCountryFlag from 'react-country-flag';
 import Footer from './footer.tsx';
 import { useTranslation } from 'react-i18next';
 import { selectedLang, useLangContext } from "../Contexts/languageContext.tsx";
-import axios from 'axios';
+import { usePayment } from '../Contexts/paymentContext.tsx';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 
@@ -35,6 +35,7 @@ const undefinedItem : CartItem ={
 const Cart: React.FC = () => {
   const navigate = useNavigate();
   const {t} = useTranslation();
+  const {setCurrentCurrency, currentCurrency, currencyRate} = usePayment()
   const {total} = useCart();
   const {currentLang} = useLangContext();
   const [isPhoneScreen, setIsPhoneScreen] = useState<boolean>(false);
@@ -42,30 +43,6 @@ const Cart: React.FC = () => {
   const [isRemoveConfirm, setIsRemoveConfirm] = useState<boolean>(false);
   const [deletedItem, setDeletedItem] = useState<CartItem>(undefinedItem);
   const [deleteCible, setDeleteCible] = useState<string>("");
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('MAD');
-  const [ratesList, setRatesList] = useState<{[key: string]: number}>({'MAD' : 1})
-  const [rate, setRate] = useState<number>(1);
-
-  useEffect(()=> {
-    const CurrencyConverter = async () => {
-      const apiKey = import.meta.env.VITE_CURRENCY_API;
-        try {
-          const response = await axios.get(
-            `https://v6.exchangerate-api.com/v6/${apiKey}/latest/MAD`
-          );
-          const conversionRate = response.data.conversion_rates;
-          console.log(response)
-          setRatesList(conversionRate);
-        } catch (error) {
-          console.error('Erreur lors de la récupération des taux:', error);
-        }
-    };
-    CurrencyConverter();
-  }, [])
-
-  useEffect(()=>{
-      setRate(ratesList[selectedCurrency])
-  },[selectedCurrency])
 
   useLayoutEffect(()=>{
     const phoneScreen = ()=>{
@@ -157,7 +134,7 @@ const Cart: React.FC = () => {
   <div style={{width:130, height:"100%", marginLeft:2}} className="d-flex align-items-center  justify-content-start">
   <select className="form-select shadow-none align-middle d-inline border-none"
               style={{width:95, color:'green', backgroundColor:"#efecec", fontWeight:500}}
-              onChange={(e)=>setSelectedCurrency(e.target.value)}
+              onChange={(e)=>setCurrentCurrency(e.target.value)}
               >
           <option defaultValue={'MAD'} style={{fontWeight:500}}>MAD</option>
           <option style={{fontWeight:500}} value={'USD'}>USD $</option>
@@ -165,19 +142,19 @@ const Cart: React.FC = () => {
       </select>
       <ReactCountryFlag
                   className="checkFlag"
-                  countryCode= {currencyRender(selectedCurrency)}
+                  countryCode= {currencyRender(currentCurrency)}
                   svg
                   style={{
                       width: '20%',
                       height: 35,
                       marginLeft:2,
                   }}
-                  title={currencyRender(selectedCurrency)}
+                  title={currencyRender(currentCurrency)}
               />
   </div> 
   <div className="d-flex align-items-center me-1"> 
       <strong style={{fontSize:13}}> 
-        {t('total')} : <span style={{color:'green'}}> {(total*rate).toFixed(2)}</span> 
+        {t('total')} : <span style={{color:'green'}}> {(total*currencyRate).toFixed(2)}</span> 
       </strong>
   </div>
 

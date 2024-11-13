@@ -59,9 +59,9 @@ const HomePage: React.FC = () => {
                 {t('shoes')}
                 <LiaShoePrintsSolid className="mx-2 HomeTitleIconR"/>
             </div>
-            <ProductCarousel Data={productCPromo} DataDetails = {productDetails}/>
+            <ProductCarousel Data={productCPromo} DataDetails = {productDetails} productType="Shoes"/>
         </div>
-        <div className="ProductsHome">
+        <div className="ProductsHome mt-4">
         <div className="HomeTitle rounded" style={{fontWeight:'bolder'}}>
                 <AiFillProduct  className="HomeTitleIcon" />
                  {t('ourProducts')}
@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
                     {t('shoes')}
                 <LiaShoePrintsSolid className="mx-2 HomeTitleIconR"/>
             </div>
-            <ProductCarousel Data={productCNoPromo} DataDetails = {productDetails}/>
+            <ProductCarousel Data={productCNoPromo} DataDetails = {productDetails} productType="Shoes"/>
         </div>
         
         <Footer/>    

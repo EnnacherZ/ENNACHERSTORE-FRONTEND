@@ -130,9 +130,9 @@ const Checkout :  React.FC = () => {
             document.body.removeChild(script);
         };
       }, []);
-      const handleYCPay = async (event:React.MouseEvent<HTMLButtonElement>) => {
-        
-        const youCanPayment = new YouCanPay(
+      const handleYCPay = async () => {
+        if(clientForm){
+          const youCanPayment = new YouCanPay(
             'pri_sandbox_a54c2b28-f8e5-4920-a440-64003',
             true
         );    
@@ -141,7 +141,7 @@ const Checkout :  React.FC = () => {
           try {
             // Obtenir le token
             const token = await youCanPayment.getToken({
-                amount: 500, // Montant requis
+                amount: clientForm?.Amount*100 , // Montant requis
                 currency: CurrencyCode.MAD, // Devise requise
                 customer_ip: '10.25.28.35', // IP du client requise
                 order_id: clientForm?.OrderId || '', // ID de commande requis
@@ -158,12 +158,10 @@ const Checkout :  React.FC = () => {
                     email: clientForm?.Email, 
                 },
             });
-
-                setTokenId(token.id);
-                event.preventDefault();
-                
-                }catch(err){console.log(err)}
+              setTokenId(token.id);
+              }catch(err){console.log(err)}
         }
+        }else{return}      
       };
 
             useEffect(() => {
@@ -409,61 +407,75 @@ const Checkout :  React.FC = () => {
         
 
     </form>:
-      <form className='form-floating card rounded shadow-lg ClientInfosDivSM p-2 pt-0 mt-2' onSubmit={handleSubmit(validateCommand)}>
-      <div className='text-center my-2 fs-3'><b><FaUserCircle style={{marginTop:-3}}/>{t('clientInfos')}</b></div>
+      <form className={`form-floating card rounded shadow-lg p-2 pt-0 mt-2  
+        ClientInfosDivSM `} 
+      onSubmit={handleSubmit(validateCommand)}>
+      <div className='text-center my-2 fs-3'><b><FaUserCircle style={{marginTop:-3}} className="mx-2"/>{t('clientInfos')}</b></div>
       <hr></hr>
-      <span><label className="form-label">{t('firstN')}</label></span>
-      <div className="input-group mb-2">
-        <span className="input-group-text" ><FaRegUserCircle /></span> 
+      <span className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}><label className={`form-label rtl`}>{t('firstN')} :</label></span>
+      <div className={`input-group mb-2 ${selectedLang(currentLang)=="ar"&& 'rtl'} `}>
+        <span className="input-group-text rounded-0" ><FaRegUserCircle /></span>
         <input  {...register("FirstName",{
-                  required:"Your first name is required !"
+                  required:t('fnreq')+' !'
         })}
                 type="text" 
-                className={errors.FirstName?"form-control is-invalid":"form-control"} 
-                placeholder="First Name"
+                className={(selectedLang(currentLang)=='ar')?
+                          errors.FirstName?"form-control is-invalid rounded-0 rounded-start":
+                          "form-control rounded-0 rounded-start":"form-control"
+                } 
+                placeholder={t('firstN')}
                 readOnly={isModify}
                 disabled={isModify}/>
     </div>
     {errors.FirstName && (
-        <span style={{color:"red", fontSize:16}}>{`${errors.FirstName.message}`}</span>
+        <span style={{color:"red", fontSize:16}} className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}
+        >{`${errors.FirstName.message}`}</span>
     )}
-    <span><label className="form-label">{t('lastN')}</label></span>
-    <div className="input-group mb-2">
-        <span className="input-group-text"><FaRegUserCircle /></span> 
+    <span className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}><label className="form-label ">{t('lastN')} :</label></span>
+    <div className={`input-group mb-2 ${selectedLang(currentLang)=="ar"&& 'rtl'} `}>
+        <span className="input-group-text rounded-0" ><FaRegUserCircle /></span> 
         <input  {...register("LastName",{
-                  required:"Your last name is required !"
+                  required:t('lnreq')+' !'
         })} 
                 type="text" 
-                className={errors.LastName?"form-control is-invalid":"form-control"}
-                placeholder="Last Name"
+                className={(selectedLang(currentLang)=='ar')?
+                  errors.LastName?"form-control is-invalid rounded-0 rounded-start":
+                  "form-control rounded-0 rounded-start":"form-control"
+        }
+                placeholder={t('lastN')}
                 readOnly={isModify}
                 disabled={isModify}/>
 
     </div>
     {errors.LastName && (
-      <span style={{color:"red", fontSize:16}}>{`${errors.LastName.message}`}</span>
+      <span style={{color:"red", fontSize:16}} className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}>
+        {`${errors.LastName.message}`}</span>
     )}
 
-    <span><label className="form-label">{t('email')}</label></span>
-    <div className="input-group mb-2">
-        <span className="input-group-text" id="basic-addon2"><MdAlternateEmail /></span>
+    <span className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}><label className="form-label">{t('email')} :</label></span>
+    <div className={`input-group mb-2 ${selectedLang(currentLang)=="ar"&& 'rtl'} `}>
+        <span className="input-group-text rounded-0" id="basic-addon2"><MdAlternateEmail /></span>
         <input  {...register("Email",{
-                  required:"Your e-mail is required !"
+                  required:t('emlreq')+' !'
         })} 
                 type="email" 
-                className={errors.Email?"form-control is-invalid":"form-control"}
+                className={(selectedLang(currentLang)=='ar')?
+                  errors.Email?"form-control is-invalid rounded-0 rounded-start":
+                  "form-control rounded-0 rounded-start":"form-control"
+        }
                 placeholder={t('email')}
                 readOnly={isModify}
                 disabled={isModify}/>
       </div>          
       {errors.Email && (
-            <span style={{color:"red",fontSize:16}}>{`${errors.Email.message}`}</span>
+            <span style={{color:"red",fontSize:16}} className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}>
+              {`${errors.Email.message}`}</span>
           )}
-    <span><label className="form-label">{t('phN')}</label></span>
-      <div className="input-group mb-2">
-      <span className="input-group-text" id="basic-addon3"><FaPhone /></span>
+    <span className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}><label className="form-label">{t('phN')} :</label></span>
+      <div className={`input-group mb-2 ${selectedLang(currentLang)=="ar"&& 'rtl'} `}>
+      <span className="input-group-text rounded-0" id="basic-addon3"><FaPhone /></span>
       <input  {...register("Tel",{
-                  required:"Your phone number is required !",
+                  required:t('telreq')+' !',
                   minLength : {
                     value:10,
                     message:"You should enter 06.. or 07... or +212... form "
@@ -471,47 +483,58 @@ const Checkout :  React.FC = () => {
                   
         })} 
               type="tel" 
-              className={errors.Tel?"form-control is-invalid":"form-control"} 
-              placeholder='Cell phone number'
+              className={(selectedLang(currentLang)=='ar')?
+                errors.Tel?"form-control is-invalid rounded-0 rounded-start text-end":
+                "form-control rounded-0 rounded-start text-end":"form-control"
+      } 
+              placeholder={t('phN')}
               readOnly={isModify}
               disabled={isModify}/>
 
 
     </div>
     {errors.Tel && (
-        <span style={{color:"red", fontSize:16}}>{`${errors.Tel.message}`}</span>
+        <span style={{color:"red", fontSize:16}} className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}>
+          {`${errors.Tel.message}`}</span>
     )}
 
-    <span><label className="form-label">{t('city')}</label></span>
-    <div className="input-group mb-3">
-      <span className="input-group-text"><FaCity /></span>
+    <span className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}><label className="form-label">{t('city')} :</label></span>
+    <div className={`input-group mb-2 ${selectedLang(currentLang)=="ar"&& 'rtl'} `}>
+      <span className="input-group-text rounded-0"><FaCity /></span>
       <input  {...register("City",{
-                  required:"Your City name is required !"
+                  required:t('cityreq')+' !'
         })} 
               type="text" 
-              className={errors.City?"form-control is-invalid":"form-control"}
-              placeholder='Your city'
+              className={(selectedLang(currentLang)=='ar')?
+                errors.City?"form-control is-invalid rounded-0 rounded-start":
+                "form-control rounded-0 rounded-start ":"form-control"}
+              placeholder={t('city')}
               readOnly={isModify}
               disabled={isModify}/>
       </div>
       {errors.City && (
-      <span style={{color:"red",fontSize:16}}>{`${errors.City.message}`}</span>
+      <span style={{color:"red",fontSize:16}} className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}>
+        {`${errors.City.message}`}</span>
     )}
 
-      <span><label className="form-label">{t('address')}</label></span>
-      <div className="input-group mb-2">
-              <span className="input-group-text"><BsGeoAltFill /></span>
+      <span className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}><label className="form-label">{t('address')} :</label></span>
+      <div className={`input-group mb-2 ${selectedLang(currentLang)=="ar"&& 'rtl'} `}>
+              <span className="input-group-text rounded-0"><BsGeoAltFill /></span>
       <input  {...register("Address",{
-                  required:"Your address is required !"
+                  required:t('addressreq')+' !'
         })} 
               type="text" 
-              className={errors.Address?"form-control is-invalid":"form-control"} 
-              placeholder="Your address"
+              className={(selectedLang(currentLang)=='ar')?
+                errors.Address?"form-control is-invalid rounded-0 rounded-start":
+                "form-control rounded-0 rounded-start":"form-control"
+      }
+              placeholder={t('address')}
               readOnly={isModify}
               disabled={isModify}/>
     </div>
     {errors.Address && (
-      <span style={{color:"red", fontSize:16}}>{`${errors.Address.message}`}</span>
+      <span style={{color:"red", fontSize:16}} className={`${selectedLang(currentLang)=='ar'&&'rtl'}`}>
+        {`${errors.Address.message}`}</span>
     )}
 
       <button type='submit' 

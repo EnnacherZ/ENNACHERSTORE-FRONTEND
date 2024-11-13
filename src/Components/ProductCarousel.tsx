@@ -12,9 +12,10 @@ import Loading from "./loading";
 interface ProductCarouselProps {
   Data : Shoe[];
   DataDetails : any;
+  productType : string;
 }
 
-const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) => {
+const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails, productType}) => {
   const apiUrl = import.meta.env.VITE_API_URL
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -41,7 +42,26 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
         setTargetedProduct(pro, proDetail);
         navigate(`/productDetail/${pro.productType}/${pro.category}/${pro.ref}/`)
   
-      } 
+      }
+
+      const productRender = (l:string)=>{
+        let x = '';
+        switch(l){
+          case 'Shoes':
+            x = 'goShoesSec';
+            break;
+          case 'Sandals':
+            x = 'goSandalsSec';
+            break;
+          case 'Shirts':
+            x = 'goShurtsSec';
+            break;
+          case 'Pants':
+            x = 'goPantsSec';
+            break;
+        }
+        return x;
+      }
 
     return(
       <><hr className="my-1"/>
@@ -80,6 +100,12 @@ const ProductCarousel : React.FC<ProductCarouselProps> = ({Data, DataDetails}) =
             ))}
 
         </Carousel>
+        <div className="d-flex justify-content-center mt-3">
+          <button className="btn btn-outline-secondary fw-bold"
+                  onClick={()=>navigate(`/${productType}`)}> 
+            {t(productRender(productType))} 
+          </button>
+        </div>
         <hr className="my-1"/>
       </>
 
