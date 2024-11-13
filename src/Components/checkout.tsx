@@ -570,7 +570,7 @@ const Checkout :  React.FC = () => {
           </div>
       </div>
     </div>
-    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':'is-disabled'}`} >{t('pay')}</button>
+    <button id="pay" className={`rounded mt-2 pay-button ${isClt(clientForm)&&isModify?'':''}`} >{t('pay')}</button>
     </div>
 
     
