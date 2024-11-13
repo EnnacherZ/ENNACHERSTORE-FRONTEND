@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { GrTransaction } from "react-icons/gr";
 import { GiTicket } from "react-icons/gi";
-import createPdf from "../pdf";
 import Footer from "./footer";
 import { AllItems } from "../Contexts/cartContext";
 import { BsBagCheckFill } from "react-icons/bs";
@@ -110,7 +109,7 @@ const SuccessTrans: React.FC = () => {
             </li>
           </ul>
           <div className="trans-ticket d-flex justify-content-center mb-1">
-            <button className="ticket-generator btn btn-warning fw-bold" onClick={createPdf}>
+            <button className="ticket-generator btn btn-warning fw-bold">
                 <GiTicket size={25} /> {t('downloadTicket')}
             </button>
       </div>
