@@ -44,6 +44,8 @@ const Checkout :  React.FC = () => {
     const [tokenId, setTokenId] = useState<string|undefined>(undefined);
     const [selectedCurrency, setSelectedCurrency] = useState<string>('MAD')
     const [isModify, setIsModify] = useState<boolean>(false);
+    const [orderedProducts, setOrderedProducts] = useState([]);
+    const [isChecked, setIsChecked] = useState<string>()
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const wait = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
     const flN = () => {if(clientForm){return  clientForm?.FirstName+' '+clientForm?.LastName}else{return ''}}
@@ -174,20 +176,23 @@ const Checkout :  React.FC = () => {
                     formContainer: '#payment-container'
                 });
                 
-              ycPay.renderCreditCardForm('default')
-              // Ajouter un gestionnaire d'événements pour le bouton de paiement
-              const payButton = document.getElementById('pay');
-              if (payButton) {
-                  payButton.addEventListener('click', function() {
+                ycPay.renderCreditCardForm('default')
+
+                const payButton = document.getElementById('pay');
+                if (payButton){
+                  payButton.addEventListener('click',  () =>{
+                    handlePaymentCheck();
+                    if(isChecked==='success'){
                       ycPay.pay(tokenId)
-                          .then(successCallback)
-                          .catch(errorCallback);
+                      .then(successCallback)
+                      .catch(errorCallback)
+                    }
                   });
               }
           }
       }, [tokenId]);
       const successCallback = async (response: any) => {
-        setTokenId(undefined)
+          setTokenId(undefined)
           const res = response.response;
           setPaymentResponse({
             code : res.code,
@@ -198,32 +203,33 @@ const Checkout :  React.FC = () => {
             success : res.success,
             order_id :res.order_id
           });
-          handlePayment(response.response.transaction_id);
+          handlePayment(response.response.transaction_id, orderedProducts);
       };
 
       const errorCallback = (response: any) => {
+        window.location.reload()
           console.error('Payment error:', response);
-          toast.error(t('toastSizeAlert'), {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-        });
       };
 
-      const handlePayment = async (trans:string) => {
+      const handlePaymentCheck = async () =>{
+        try{
+          const response = await axios.post(`${apiUrl}api/handlepaycheck`, {
+            shoes_order : shoesOrder,
+            sandals_order : sandalsOrder,
+          })
+          setOrderedProducts(response.data.orderedProducts || [])
+          setIsChecked(response.data.message)
+        }catch(err){console.log(err)}
+      }
+
+
+      const handlePayment = async (trans:string, orderedProduct:any) => {
         try {
             setIsLoading(true)
             const response = await axios.post(`${apiUrl}api/handlepay/`,{
-              shoes_order : shoesOrder,
-              sandals_order : sandalsOrder,
               client_data : clientForm,
-              transaction_id : trans
+              transaction_id : trans,
+              orderedProduct : orderedProduct
             });
             await wait(5000)
             setIsLoading(false)
