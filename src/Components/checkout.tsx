@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from 'uuid';
 import { CurrencyCode, YouCanPay } from "youcan-payment-nodejs-sdk";
 import { useLangContext, selectedLang } from "../Contexts/languageContext"; 
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import {ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useCart } from "../Contexts/cartContext";
 import Loading from "./loading";
