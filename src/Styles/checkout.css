@@ -19,7 +19,7 @@
     justify-content: space-around;
 }
 .ClientInfosDiv{
-    width: 45%;
+    width: 50%;
     background-color: #fcfcfc;
 }
 .ClientInfosDivSM{
@@ -33,7 +33,7 @@
     font-size: 12px;
 }
 .paymentDiv{
-    width:50%
+    width:45%
 }
 .paymentGateway{
     width:100%;
@@ -104,6 +104,10 @@
     height: 100%;
     object-fit: fill;
 }
+#payment-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
 
 
 @media (max-width:800px){
@@ -134,8 +138,5 @@
     #pay{
         width: 90%;
         margin-left:5%;
-    }
-    form span label{
-        direction: rtl;
     }
 }
