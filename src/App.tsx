@@ -15,7 +15,6 @@ import { ProductsContextProvider } from "./Contexts/ProductsContext";
 import { LangContextProvider } from "./Contexts/languageContext";
 import { DataContextProvider } from "./Contexts/dataContext";
 import SuccessTrans from "./Components/successTrans";
-import Form from "./Components/form";
 
 
 const App : React.FC = () =>{
@@ -39,7 +38,6 @@ const App : React.FC = () =>{
             <Route path="/YourCart" element={<Cart/>}/>
             <Route path="/Checkout" element={<Checkout/>}/>
             <Route path="/Trans" element={<SuccessTrans/>}/>
-            <Route path="/form" element={<Form/>}/>
           </Routes>
       </Router>
       </ProductsContextProvider>
