@@ -44,8 +44,7 @@
     "react-toastify": "^10.0.5",
     "react-transition-group": "^4.4.5",
     "swiper": "^11.1.14",
-    "uuid": "^10.0.0",
-    "youcan-payment-nodejs-sdk": "^1.2.8"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

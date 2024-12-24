@@ -10,6 +10,7 @@ import { TbRosetteDiscount } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
 import { AiFillProduct } from "react-icons/ai";
 import { LiaShoePrintsSolid } from "react-icons/lia";
+import Apitest from "./apitest.tsx";
 
 const HomePage: React.FC = () => {
     const apiUrl = import.meta.env.VITE_API_URL
@@ -74,6 +75,7 @@ const HomePage: React.FC = () => {
             </div>
             <ProductCarousel Data={productCNoPromo} DataDetails = {productDetails} productType="Shoes"/>
         </div>
+        <Apitest/>
         
         <Footer/>    
     </>

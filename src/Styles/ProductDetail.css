@@ -146,14 +146,46 @@
     width: 80%;
     height : 2.5em;
     font-size: 18px;
-    background-color: black;
-    color: white;
+    background-color: #ffc107;
+    color: black;
     margin-left: 10%;
+    border : none;
+    border-radius: 5px;
+    transition: 0.2s ease-in-out;
+}
+.ProductDetailComButton:hover{
+    width: 80%;
+    height : 2.5em;
+    font-size: 20px;
+    background-color: black;
+    color: #ffc107;
+    margin-left: 10%;
+    border : 2px solid #ffc107;
+    border-radius: 5px;
 }
 
-.ProductDetailComButton.phone{
-    height : 10vw
+.ProductDetailDirectComButton{
+    width: 80%;
+    height : 2.5em;
+    font-size: 18px;
+    background-color: #0e92e4;
+    color: white;
+    margin-left: 10%;
+    border : none;
+    border-radius: 5px;
+    transition: 0.2s ease-in-out;
 }
+.ProductDetailDirectComButton:hover{
+    width: 80%;
+    height : 2.5em;
+    font-size: 20px;
+    background-color: white;
+    color: #0e92e4;
+    margin-left: 10%;
+    border : 2px solid #0e92e4;
+    border-radius: 5px;
+}
+
 
 .rtl{
     direction: rtl;

@@ -95,6 +95,7 @@ i18n
           goSandalsSec :'Go to sandals section',
           goShirtsSec :'Go to shirts section',
           goPantsSec :'Go to pants section',
+          directCmd : 'Checkout now !'
           
         },
       },
@@ -187,7 +188,7 @@ i18n
           goSandalsSec :'Aller à la section des sandales',
           goShirtsSec :'Aller à la section des chemises',
           goPantsSec :'Aller à la section des pantalons',
-          
+          directCmd : 'Checkout maintenant !',
 
         },
       },
@@ -280,7 +281,7 @@ i18n
           goSandalsSec :'الذهاب إلى قسم الصنادل',
           goShirtsSec :'الذهاب إلى قسم القمصان',
           goPantsSec :' الذهاب إلى قسم السراويل',
-          
+          directCmd : '! الدفع الآن'
 
         },
       },

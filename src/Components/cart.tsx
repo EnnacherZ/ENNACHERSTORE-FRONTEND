@@ -198,7 +198,7 @@ const Cart: React.FC = () => {
       <button className='btn btn-dark mx-1 mt-3'
               
               onClick={()=>navigate("/Checkout")}>
-            <TbCreditCardPay  style={{marginTop:-3, }} className='me-2'/> Checkout now!
+            <TbCreditCardPay  style={{marginTop:-3, }} className='me-2'/> {t('directCmd')}
       </button>
               
       <div className="container d-flex justify-content-center">

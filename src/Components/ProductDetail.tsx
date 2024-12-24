@@ -16,7 +16,7 @@ import Footer from "./footer";
 import { useProductsContext } from "../Contexts/ProductsContext";
 import { Sandal, SandalSize } from "./Sandales";
 import { Bounce, toast, ToastContainer } from "react-toastify";
-import { useCart } from "../Contexts/cartContext";
+import {useCart } from "../Contexts/cartContext";
 import { useTranslation } from "react-i18next";
 import { selectedLang, useLangContext } from "../Contexts/languageContext";
 import Text from "./TextProductsDetails";
@@ -61,7 +61,7 @@ const ProductDetail: React.FC = () => {
 
     const proImg = (pro: Shoe | Sandal ) => [pro.image, pro.image1, pro.image2, pro.image3, pro.image4];
 
-    const handleCommand = (pro: Shoe | Sandal) => {
+    const handleCommand = (pro:Shoe | Sandal) => {
         if(!selectedShoeDetails[pro.id]){
             toast.error(t('toastSizeAlert'), {
                 position: "top-center",
@@ -86,7 +86,7 @@ const ProductDetail: React.FC = () => {
           size: selectedShoeDetails[pro.id].size,
           quantity: 1,
           image : pro.image,
-          promo : pro.promo
+          promo : pro.promo,
         };
         addItem(item);
         toast.success(t('toastAddSuccess') , {
@@ -100,6 +100,9 @@ const ProductDetail: React.FC = () => {
             transition: Bounce,
         });
       };
+    //   const handleDirectCommand = () =>{
+
+    //   }
 
     if(!DetailledProduct){return(<>non</>)}
     return (
@@ -211,6 +214,21 @@ const ProductDetail: React.FC = () => {
                             {isRemaining(DetailledProduct?.selectedProduct.id) ? (
                                 <>
                                     <FaCartPlus size={20} className="ProductDetailComIcon" /> {t('addCart')}
+                                </>
+                            ) : (
+                                <>
+                                    <RiErrorWarningLine size={20} className="ProductDetailComIcon" /> {t('soldOut')}
+                                </>
+                            )}
+                        </button>
+                        <button
+                            className={`ProductDetailDirectComButton mt-3 ${isPhone?'phone':''}`}
+                            onClick={() => handleCommand(DetailledProduct?.selectedProduct)}
+                            disabled={!isRemaining(DetailledProduct?.selectedProduct.id)}
+                        >
+                            {isRemaining(DetailledProduct?.selectedProduct.id) ? (
+                                <>
+                                    <FaCartPlus size={20} className="ProductDetailComIcon" /> {t('directCmd')}
                                 </>
                             ) : (
                                 <>

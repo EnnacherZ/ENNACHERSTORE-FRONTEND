@@ -11,10 +11,8 @@ import { FaCity,FaRegUserCircle, FaUserCircle} from 'react-icons/fa';
 import { MdAlternateEmail} from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
 import ReactCountryFlag from "react-country-flag";
-import Footer from "./footer";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from 'uuid';
-import { CurrencyCode, YouCanPay } from "youcan-payment-nodejs-sdk";
 import { useLangContext, selectedLang } from "../Contexts/languageContext"; 
 import {ToastContainer } from "react-toastify";
 import axios from "axios";
@@ -39,6 +37,7 @@ const Checkout :  React.FC = () => {
     const {total} = useCart();
     const {currentLang} = useLangContext();
     const {setClientForm, clientForm, setPaymentResponse,} = usePayment();
+    const [formRendered, setFormRendered] = useState(false);
     const [isPhone, setIsPhone]= useState<boolean>()
     const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
     const [tokenId, setTokenId] = useState<string|undefined>(undefined);
@@ -131,62 +130,70 @@ const Checkout :  React.FC = () => {
         };
       }, []);
       const handleYCPay = async () => {
-        if(clientForm){
-          const youCanPayment = new YouCanPay(
-            'pri_sandbox_a54c2b28-f8e5-4920-a440-64003',
-            true
-        );    
-        if(tokenId!==undefined){return}
-        else{
+        if(clientForm&&!tokenId){
           try {
             // Obtenir le token
-            const token = await youCanPayment.getToken({
+            const tokenParams = {
                 amount: clientForm?.Amount*100 , // Montant requis
-                currency: CurrencyCode.MAD, // Devise requise
+                currency: 'MAD', // Devise requise
                 customer_ip: '10.25.28.35', // IP du client requise
                 order_id: clientForm?.OrderId || '', // ID de commande requis
                 success_url: 'https://google.com/', // URL de succès requise
                 error_url: 'https://youtube.com/', // URL d'erreur optionnelle
-                customer: {
-                    name: flN(), 
-                    address: clientForm?.Address, 
-                    zip_code: '', 
-                    city: clientForm?.City, 
-                    state: '', 
-                    country_code: 'MA', 
-                    phone: clientForm?.Tel, 
-                    email: clientForm?.Email, 
-                },
-            });
-              setTokenId(token.id);
-              }catch(err){console.log(err)}
-        }
+            };
+            const customer= {
+              name: flN(), 
+              address: clientForm?.Address, 
+              zip_code: '', 
+              city: clientForm?.City, 
+              state: '', 
+              country_code: 'MA', 
+              phone: clientForm?.Tel, 
+              email: clientForm?.Email, 
+          }
+            const respo = await axios.post('http://192.168.1.9:1011/api/getTokenhh',
+             {tokenParams : tokenParams,
+              customer : customer})
+            const tokenRespo = respo.data.token || undefined
+            setTokenId(tokenRespo);
+            }catch(err){console.log(err)}  
         }else{return}      
       };
 
-            useEffect(() => {
-                if(tokenId==undefined){return}
-                if (isScriptLoaded && tokenId) {
-                  const ycPay = new YCPay('pub_sandbox_1bfc0387-7aea-49ab-b51e-930e5', {
-                    locale: selectedLang(currentLang),
-                    isSandbox: true,
-                    errorContainer: '#error-container',
-                    formContainer: '#payment-container'
-                });
-                
-                ycPay.renderCreditCardForm('default')
-
-                const payButton = document.getElementById('pay');
-                if (payButton){
-                  payButton.addEventListener('click',  () =>{
-                      ycPay.pay(tokenId)
-                      .then(successCallback)
-                      .catch(errorCallback)
-                    
-                  });
-              }
+      useEffect(() => {
+        // Ne rien faire si tokenId est undefined ou si le formulaire a déjà été rendu
+        if (tokenId === undefined || formRendered) {
+          return;
+        }
+    
+        if (isScriptLoaded && tokenId) {
+          // Initialiser YCPay
+          const ycPay = new YCPay('pub_sandbox_1bfc0387-7aea-49ab-b51e-930e5', {
+            locale: selectedLang(currentLang),
+            isSandbox: true,
+            errorContainer: '#error-container',
+            formContainer: '#payment-container',
+            token: tokenId,
+            customCSS: '.main-container{display: block} ',
+          });
+    
+          // Rendre le formulaire de paiement
+          ycPay.renderCreditCardForm('default');
+    
+          // Ajouter l'écouteur pour le bouton de paiement
+          const payButton = document.getElementById('pay');
+          if (payButton) {
+            payButton.addEventListener('click', () => {
+              ycPay.pay(tokenId)
+                .then(successCallback)
+                .catch(errorCallback);
+            });
           }
-      }, [tokenId]);
+    
+          // Marquer le formulaire comme rendu pour éviter de le rendre à nouveau
+          setFormRendered(true);
+        }
+      }, [tokenId,formRendered]);
       const successCallback = async (response: any) => {
           setTokenId(undefined)
           const res = response.response;
@@ -582,7 +589,7 @@ const Checkout :  React.FC = () => {
       </button>
     </form>}
 
-    <div className="d-flex flex-column paymentDiv">
+    <div className="d-flex flex-column paymentDiv mb-5">
     <div className={`paymentGateway ${isClt(clientForm)&&isModify?'':'is-disabled'} card shadow p-2 mt-2 `}
           id="paymentGateway">
       <div className="paymentGatewayTitle fs-3" id="paymentGatewayTitle">
@@ -593,8 +600,8 @@ const Checkout :  React.FC = () => {
         <FaCreditCard className="mx-3"/> {t('creditCard')}
       </button>
       <div id="error-container" ></div>
-      <div id="payment-container" className="" ></div>
-      <div className="gateway-brand d-flex justify-content-end d-none p-2" >
+      <div id="payment-container" className="mb-2" ></div>
+      <div className="gateway-brand d-flex justify-content-end  p-2" >
           <span className="text-muted"><i>by</i></span>
           <div className="gateway-brand-img">
               <img src="https://youcanpay.com/images/ycpay-logo.svg" alt="" />
@@ -610,7 +617,7 @@ const Checkout :  React.FC = () => {
     </div>
     <ToastContainer />
         </>:<Loading message="Your command is being treating"/>}
-      <Footer/>
+
     </>)
 
 
